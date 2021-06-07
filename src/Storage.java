@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Storage {
     private final int NUMBER_OF_OBJECTS = 4; //how many objects are in patient (i.e. ID, firstname, lastname, DOB)
-    private final String JSON_DIRECTORY = "Assets/Storage.JSON";  //file path of json storage
+    private final String JSON_DIRECTORY = "Assets/Storage.json";  //file path of json storage
 
     private int CurID;   //I implemented an ID system to keep track of where each person is
 
