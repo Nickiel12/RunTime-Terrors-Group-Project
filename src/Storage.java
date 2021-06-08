@@ -1,15 +1,11 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 
 public class Storage {
-    private final int NUMBER_OF_OBJECTS = 4; //how many objects are in patient (i.e. ID, firstname, lastname, DOB)
     private final String JSON_DIRECTORY = "Assets/Storage.json";  //file path of json storage
 
-    private int CurID;   //I implemented an ID system to keep track of where each person is
-
-    private final ArrayList<String> list = new ArrayList<>(); //ArrayList of type String
+    private final ArrayList<Patient> list = new ArrayList(); //ArrayList of type patient
 
     //Starts storage and loads
     public Storage() throws IOException {
@@ -25,10 +21,9 @@ public class Storage {
 
         file.write("{\n");
 
-        for (int i = 0; i < list.size() - 1; i+= NUMBER_OF_OBJECTS) {
-            list.set(i, i + "");
-            file.append("  \"").append(String.valueOf(i)).append("\": {\n    \"ID\": \"").append(list.get(i)).append("\",\n    \"firstName\": \"").append(list.get(i + 1)).append("\",\n    \"lastName\": \"").append(list.get(i + 2)).append("\",\n    \"DOB\": \"").append(list.get(i + 3)).append("\"\n  }");
-            if (i != list.size() - NUMBER_OF_OBJECTS) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            file.append("  \"").append(String.valueOf(i)).append("\": {\n    \"name\": \"").append(list.get(i).getName()).append("\",\n    \"acuity\": \"").append(String.valueOf(list.get(i).getAcuity())).append("\",\n    \"provider\": \"").append(list.get(i).getProvider()).append("\"\n  }");
+            if (i != list.size() - 2) {
                 file.append(",\n");
             }
         }
@@ -44,22 +39,21 @@ public class Storage {
             return;
         }
         file.nextLine();
-        CurID = -4;
 
         while (file.hasNext()) {
-            CurID += NUMBER_OF_OBJECTS;
 
             file.nextLine();
             if (file.hasNext()) {   //prevents NoSuchElementException
                 file.next();
             } else break;
 
-            for (int j = 0; j < NUMBER_OF_OBJECTS; j++) {
-
-                String temp = file.next();
-                list.add(removeQuotes(temp));
-                file.next();
-            }
+            String name = file.next();
+            file.next();
+            String acuity = file.next();
+            file.next();
+            String provider = file.next();
+            file.next();
+            list.add(new Patient(removeQuotes(name), Integer.parseInt(removeQuotes(acuity)), removeQuotes(provider)));
             file.nextLine();
         }
         System.out.println("LOADED SUCCESSFULLY");
@@ -80,41 +74,15 @@ public class Storage {
         }
         return newStr;
     }
-    //add a patient with first last and DOB TODO: create another add method that has a patient as a parameter
-    public void add(String firstName, String lastName, String DOB) {
-        list.add(CurID + "");
-        list.add(firstName);
-        list.add(lastName);
-        list.add(DOB);
+    //add a new patient
+    public void add(String name, int acuity, String provider) {
+        list.add(new Patient(name, acuity, provider));
     }
-    //Takes linger because arraylist
-    public void remove(int ID) {
-        if (ID == 0) {   //special case ID = 0
-            list.subList(0, 4).clear();
-        } else if (list.size() == 0) {       //special case list is empty
-            System.out.println("File is empty, nothing was removed");
-        } else {
-            Iterator<String> iterator = list.iterator();
-            for (int i = 0; i < ID; i++) {
-                iterator.next();
-            }
-            for (int i = 0; i < NUMBER_OF_OBJECTS; i++) {
-                iterator.remove();
-                iterator.next();
-            }
-        }
+    public void add(Patient patient) {
+        list.add(patient);
     }
-    //Lists all patients to out
-    public void list() {
-        System.out.println("{");
-
-        for (int i = 0; i < list.size() - 1; i+= NUMBER_OF_OBJECTS) {
-            list.set(i, i + "");
-            System.out.append("  \"").append(String.valueOf(i)).append("\": {\n    \"ID\": \"").append(list.get(i)).append("\",\n    \"firstName\": \"").append(list.get(i + 1)).append("\",\n    \"lastName\": \"").append(list.get(i + 2)).append("\",\n    \"DOB\": \"").append(list.get(i + 3)).append("\"\n  }");
-            if (i != list.size() - NUMBER_OF_OBJECTS) {
-                System.out.append(",\n");
-            }
-        }
-        System.out.append("\n}");
+    //Takes longer because arraylist
+    public void remove(int index) {
+        list.remove(index);
     }
 }
