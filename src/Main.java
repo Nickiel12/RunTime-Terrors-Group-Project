@@ -49,7 +49,7 @@ public class Main {
     }
 
     public static void viewPatients(Scanner scnr, Storage patients){
-        Patient[] patients1 = patients.toArray(Patient[]::new);
+        Patient[] patients1 = patients.getList().toArray(Patient[]::new);
         System.out.println("[0] First Name");
         System.out.println("[1] Last Name");
         System.out.println("[2] By Acuity");
@@ -71,7 +71,7 @@ public class Main {
 
     public static void searchAndView(Scanner scnr, Storage patients){
 
-        Patient[] patients1 = patients.toArray(Patient[]::new);
+        Patient[] patients1 = patients.getList().toArray(Patient[]::new);
         Arrays.sort(patients1, new PatientSortByAcuity());
         System.out.println("[0] Search by Name");
         System.out.println("[1] Search by Acuity");
@@ -206,7 +206,7 @@ public class Main {
         System.out.println("Enter a Patients Name: ");
         String patName = scnr.nextLine();
         ArrayList<Patient> found = new ArrayList<>();
-        for (Patient p1 : patients) {
+        for (Patient p1 : patients.getList()) {
             if (p1.getName().contains(patName)) found.add(p1);
         }
         if (found.size() == 0){
@@ -220,8 +220,8 @@ public class Main {
         }
     }
 
-    public static Patient listAndGet(Scanner scnr, Storage patients){
-
+    public static Patient listAndGet(Scanner scnr, Storage patientsStorage){
+        ArrayList<Patient> patients = patientsStorage.getList();
         for (int i = 0; i < patients.size(); i++) {
             System.out.printf("[%d] %s\n", i, patients.get(i));
         }
