@@ -9,6 +9,7 @@ public class Patient {
     private String lastName;
     private List<String> problemList;
     private LocalDate birthday;
+    private int acuity;
     private int idNumber;
     private static int idCounter = 100000;
     final LocalDate currentDate = LocalDate.now();
@@ -16,10 +17,11 @@ public class Patient {
     public Patient(){
 
     }
-    public Patient(String name, LocalDate birthday, List<String> problemList, int idNumber){
+    public Patient(String name, LocalDate birthday, List<String> problemList, int idNumber, int acuityScore){
         this.birthday = birthday;
         this.problemList = new ArrayList<>();
         this.idNumber = idNumber;
+        this.acuity = acuityScore;
 
     }
     public void setName(Scanner scnr){
@@ -99,6 +101,12 @@ public class Patient {
     }
     public void getIdNumber(){
         System.out.println("Patient ID: " + idNumber);
+    }
+    public int getAcuity(){
+        return acuity;
+    }
+    public void setAcuity(int acuityScore){
+        this.acuity = acuityScore;
     }
     public void printPatientInfo(){
         this.getName();
