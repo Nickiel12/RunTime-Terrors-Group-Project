@@ -173,5 +173,16 @@ public class Patient {
         this.setProblemList(scnr);
     }
 
+    public boolean equals(Patient p1){
+        return (p1.getName().equals(this.getName())
+            && p1.getIdNumber() == this.getIdNumber()
+            && p1.getAge() == this.getAge());
+    }
+
+    public String toString(){
+        return String.format("%s, DOB: %s, Acuity Score: %d, ID: %d",
+                getName(), getBirthday().toString(), getAcuity(), getIdNumber());
+    }
+
 
 }
