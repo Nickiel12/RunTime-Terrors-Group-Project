@@ -34,17 +34,22 @@ public class Patient {
         System.out.println("Patient Name: ");
         System.out.println(lastName + ", "+ firstName);
     }
-
+    public void setFirstName(String firstName){
+        this.firstName = firstName;
+    }
+    public void setLastName(String lastName){
+        this.lastName = lastName;
+    }
     public String getFirstName(){
         return firstName;
     }
     public String getLastName(){
         return lastName;
     }
+
     public static synchronized int createID(){
         return idCounter++;
     }
-
 
     public void setBirthday(Scanner sc) {
         boolean dateCorrect = false;
@@ -72,11 +77,20 @@ public class Patient {
 
     }
 
-    public void getBirthday(){
+    public void setBirthday(LocalDate ld){
+        this.birthday = ld;
+    }
+    public void printBirthday(){
         System.out.println("DOB: " + birthday);
     }
-    public void getAge(){
+    public LocalDate getBirthday(){
+        return birthday;
+    }
+    public void printAge(){
         System.out.println("Age: " + Period.between(birthday, currentDate).getYears());
+    }
+    public int getAge(){
+        return Period.between(birthday, currentDate).getYears();
     }
 
     public void setProblemList(Scanner scnr){
@@ -88,7 +102,11 @@ public class Patient {
             input = scnr.next();
         }
     }
-    public void getProblemList(){
+    public void setProblemList(List<String> newList){
+        this.problemList = newList;
+    }
+    public List<String> getProblemList(){return problemList;}
+    public void printProblemList(){
         System.out.println("Problem List: ");
         for (String s :
                 problemList) {
@@ -99,21 +117,26 @@ public class Patient {
     public void setIdNumber(){
         this.idNumber = createID();
     }
-    public void getIdNumber(){
+    public void setIdNumber(int newId){
+        this.idNumber = newId;
+    }
+    public void printIdNumber(){
         System.out.println("Patient ID: " + idNumber);
     }
+    public int getIdNumber(){return this.idNumber;}
     public int getAcuity(){
         return acuity;
     }
     public void setAcuity(int acuityScore){
         this.acuity = acuityScore;
     }
+    public void printAcuity(){System.out.println("Patient Acuity: " + acuity);}
     public void printPatientInfo(){
         this.getName();
-        this.getIdNumber();
-        this.getBirthday();
+        this.printIdNumber();
+        this.printBirthday();
         this.getAge();
-        this.getProblemList();
+        this.printProblemList();
     }
     public void newPatient(Scanner scnr){
         this.setName(scnr);
