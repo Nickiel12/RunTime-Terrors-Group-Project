@@ -24,15 +24,24 @@ public class Patient {
         this.acuity = acuityScore;
 
     }
+
+    public static synchronized int createID(){
+        return idCounter++;
+    }
+
+    // Name
     public void setName(Scanner scnr){
         System.out.println("Enter Patient First Name:");
         this.firstName = scnr.next();
         System.out.println("Enter Patient Last Name:");
         this.lastName = scnr.next();
     }
-    public void getName(){
+    public void printName(){
         System.out.println("Patient Name: ");
         System.out.println(lastName + ", "+ firstName);
+    }
+    public String getName(){
+        return lastName + ", " + firstName;
     }
     public void setFirstName(String firstName){
         this.firstName = firstName;
@@ -47,10 +56,8 @@ public class Patient {
         return lastName;
     }
 
-    public static synchronized int createID(){
-        return idCounter++;
-    }
 
+    // Birthday
     public void setBirthday(Scanner sc) {
         boolean dateCorrect = false;
 
@@ -76,7 +83,6 @@ public class Patient {
         this.birthday = ld;
 
     }
-
     public void setBirthday(LocalDate ld){
         this.birthday = ld;
     }
@@ -86,6 +92,8 @@ public class Patient {
     public LocalDate getBirthday(){
         return birthday;
     }
+
+    // Age
     public void printAge(){
         System.out.println("Age: " + Period.between(birthday, currentDate).getYears());
     }
@@ -93,6 +101,7 @@ public class Patient {
         return Period.between(birthday, currentDate).getYears();
     }
 
+    // ProblemList
     public void setProblemList(Scanner scnr){
         this.problemList = new ArrayList<>();
         System.out.println("Input patient diagnosis: \nEnter 'exit' when finished");
@@ -114,6 +123,7 @@ public class Patient {
         }
     }
 
+    // Id Number
     public void setIdNumber(){
         this.idNumber = createID();
     }
@@ -124,6 +134,8 @@ public class Patient {
         System.out.println("Patient ID: " + idNumber);
     }
     public int getIdNumber(){return this.idNumber;}
+
+    // Acuity
     public int getAcuity(){
         return acuity;
     }
@@ -131,6 +143,7 @@ public class Patient {
         this.acuity = acuityScore;
     }
     public void printAcuity(){System.out.println("Patient Acuity: " + acuity);}
+
     public void printPatientInfo(){
         this.getName();
         this.printIdNumber();
