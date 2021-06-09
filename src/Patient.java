@@ -22,44 +22,62 @@ public class Patient {
         this.idNumber = idNumber;
 
     }
-    private void setName(){
-        Scanner scnr = new Scanner(System.in);
+    public void setName(Scanner scnr){
         System.out.println("Enter Patient First Name:");
         this.firstName = scnr.next();
         System.out.println("Enter Patient Last Name:");
         this.lastName = scnr.next();
     }
-    private void getName(){
+    public void getName(){
         System.out.println("Patient Name: ");
         System.out.println(lastName + ", "+ firstName);
     }
 
-    private static synchronized int createID(){
-        return Integer.valueOf(idCounter++);
+    public String getFirstName(){
+        return firstName;
+    }
+    public String getLastName(){
+        return lastName;
+    }
+    public static synchronized int createID(){
+        return idCounter++;
     }
 
 
-    private void setBirthday() throws ParseException{
-        Scanner sc = new Scanner(System.in);
+    public void setBirthday(Scanner sc) {
+        boolean dateCorrect = false;
 
-        System.out.println("Enter your date of birth (dd/MM/yyyy): ");
-        String dob = sc.next();
         //Converting String to Date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
-        LocalDate ld = LocalDate.parse(dob, formatter);
+
+        // I made a loop so that if it fails, it asks again
+        LocalDate ld = null;
+        while(!dateCorrect){
+            try{
+                System.out.println("Enter your date of birth (dd/MM/yyyy): ");
+                String dob = sc.next();
+
+                if (dob.toLowerCase().startsWith("q")) break;
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                ld = LocalDate.parse(dob, formatter);
+            } catch (Exception e){
+                System.out.println("I'm sorry, I wasn't able to parse that, please try again. (Enter Q/q to quit");
+                continue;
+            }
+            dateCorrect = true;
+        }
         this.birthday = ld;
 
     }
 
-    private void getBirthday(){
+    public void getBirthday(){
         System.out.println("DOB: " + birthday);
     }
-    private void getAge(){
+    public void getAge(){
         System.out.println("Age: " + Period.between(birthday, currentDate).getYears());
     }
 
-    private void setProblemList(){
-        Scanner scnr = new Scanner(System.in);
+    public void setProblemList(Scanner scnr){
         this.problemList = new ArrayList<>();
         System.out.println("Input patient diagnosis: \nEnter 'exit' when finished");
         String input = scnr.next();
@@ -68,35 +86,32 @@ public class Patient {
             input = scnr.next();
         }
     }
-    private void getProblemList(){
+    public void getProblemList(){
         System.out.println("Problem List: ");
-        System.out.println(problemList);
+        for (String s :
+                problemList) {
+            System.out.println(s);
+        }
     }
 
-
-
-    private void setIdNumber(){
+    public void setIdNumber(){
         this.idNumber = createID();
     }
-    private void getIdNumber(){
+    public void getIdNumber(){
         System.out.println("Patient ID: " + idNumber);
     }
-    public void patientInfo(){
+    public void printPatientInfo(){
         this.getName();
         this.getIdNumber();
         this.getBirthday();
         this.getAge();
         this.getProblemList();
     }
-    public void newPatient() throws ParseException{
-        this.setName();
-        try {
-            this.setBirthday();
-        }catch(ParseException e){
-            System.out.println("Parse Exception");
-        }
+    public void newPatient(Scanner scnr){
+        this.setName(scnr);
+        this.setBirthday(scnr);
         this.setIdNumber();
-        this.setProblemList();
+        this.setProblemList(scnr);
     }
 
 
