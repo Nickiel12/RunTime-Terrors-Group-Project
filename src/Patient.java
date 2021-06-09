@@ -2,14 +2,13 @@
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 
 public class Patient {
     private String firstName;
     private String lastName;
-    private List<String> problemList;
+    private LinkedList<String> problemList; // TODO this be a linked list
     private LocalDate birthday;
     private int acuity;
     private String provider;
@@ -38,7 +37,7 @@ public class Patient {
     public Patient(String firstName, String lastName, LocalDate birthday, String provider, int acuityScore){
         new Patient(firstName, lastName, birthday, createID(), provider, acuityScore, null);
     }
-    public Patient(String firstName, String lastName, LocalDate birthday, int ID, String provider, int acuityScore, List<String> problems){
+    public Patient(String firstName, String lastName, LocalDate birthday, int ID, String provider, int acuityScore, LinkedList<String> problems){
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -131,7 +130,7 @@ public class Patient {
 
     // ProblemList
     public void setProblemList(Scanner scnr){
-        this.problemList = new ArrayList<>();
+        this.problemList = new LinkedList<>();
         System.out.println("Input patient diagnosis: \nEnter 'exit' when finished");
         String input = scnr.next();
         while(!input.equals("exit")){
@@ -139,10 +138,10 @@ public class Patient {
             input = scnr.next();
         }
     }
-    public void setProblemList(List<String> newList){
+    public void setProblemList(LinkedList<String> newList){
         this.problemList = newList;
     }
-    public List<String> getProblemList(){return problemList;}
+    public LinkedList<String> getProblemList(){return problemList;}
     public void printProblemList(){
         System.out.println("Problem List: ");
         for (String s :
