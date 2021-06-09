@@ -36,10 +36,9 @@ public class Main {
             switch (commandNum) {
                 case 0 -> viewPatients(scnr, patients);
                 case 1 -> searchAndView(scnr, patients);
-                case 2 -> System.out.println("NotImplementedYet!");
+                case 2 -> editPatientInfo(scnr, patients);
                 case 3 -> createNewPatient(scnr, patients);
-                case 4 -> System.out.println("NotImplementedYet!");
-                case 5 -> System.out.println("NotImplementedYet!");
+                case 4 -> removePatient(scnr, patients);
 
                 case 9 -> doLoop = false;
             }
@@ -47,6 +46,27 @@ public class Main {
         }
 
         System.out.println("Real Doctors shouldn't treat Patients like Objects!!!");
+    }
+
+    public static void viewPatients(Scanner scnr, Storage patients){
+        Patient[] patients1 = patients.toArray(Patient[]::new);
+        System.out.println("[0] First Name");
+        System.out.println("[1] Last Name");
+        System.out.println("[2] By Acuity");
+        System.out.println("[3] By provider");
+
+        int i = scnr.nextInt();
+        switch (i) {
+            case 0 -> Arrays.sort(patients1, new PatientSortByFirstName());
+            case 1 -> Arrays.sort(patients1, new PatientSortByLastName());
+            case 2 -> Arrays.sort(patients1, new PatientSortByAcuity());
+            case 3 -> Arrays.sort(patients1, new PatientSortByProvider());
+        }
+        for (Patient p :
+                patients1) {
+            System.out.println(p);
+        }
+
     }
 
     public static void searchAndView(Scanner scnr, Storage patients){
@@ -92,27 +112,6 @@ public class Main {
 
     }
 
-    public static void viewPatients(Scanner scnr, Storage patients){
-        Patient[] patients1 = patients.toArray(Patient[]::new);
-        System.out.println("[0] First Name");
-        System.out.println("[1] Last Name");
-        System.out.println("[2] By Acuity");
-        System.out.println("[3] By provider");
-
-        int i = scnr.nextInt();
-        switch (i) {
-            case 0 -> Arrays.sort(patients1, new PatientSortByFirstName());
-            case 1 -> Arrays.sort(patients1, new PatientSortByLastName());
-            case 2 -> Arrays.sort(patients1, new PatientSortByAcuity());
-            case 3 -> Arrays.sort(patients1, new PatientSortByProvider());
-        }
-        for (Patient p :
-                patients1) {
-            System.out.println(p);
-        }
-
-    }
-
     public static void removePatient(Scanner scnr, Storage patients) {
         Patient target = findPatient(scnr, patients);
         if (target != null) {
@@ -128,44 +127,33 @@ public class Main {
         }
     }
 
-    public static Patient findPatient(Scanner scnr, Storage patients){
-        System.out.println("Enter a Patients Name: ");
-        String patName = scnr.nextLine();
-        ArrayList<Patient> found = new ArrayList<>();
-        for (Patient p1 : patients) {
-            if (p1.getName().contains(patName)) found.add(p1);
+    public static void editPatientInfo(Scanner scnr, Storage patients){
+        Patient target = findPatient(scnr, patients);
+        if (target == null) return;
+        System.out.println("What would you like to change?");
+        System.out.println("[0] Acuity");
+        System.out.println("[1] Provider");
+        System.out.println("[2] Problems List");
+        System.out.println("[9] Quit");
+
+        int i = scnr.nextInt();
+        if (i == 2)
+        {
+            editPatientProblems(scnr, patients, target);
+            return;
         }
-        if (found.size() == 0){
-            System.out.println("No patients with that name found");
-            return null;
-        } else if (found.size() == 1){
-            return found.get(0);
-        } else {
-            System.out.println("Multiple patients with that name were found,\nPlease select with one you want:");
-            return listAndGet(scnr, patients);
+        System.out.print("Enter the new value: ");
+        switch(i){
+            case 0 -> {
+                int newAcuity = scnr.nextInt();
+                target.setAcuity(newAcuity);
+            }
+            case 1 -> {
+                String newProvider = scnr.nextLine();
+                target.setProvider(newProvider);
+            }
+
         }
-    }
-
-    public static Patient listAndGet(Scanner scnr, Storage patients){
-
-        for (int i = 0; i < patients.size(); i++) {
-            System.out.printf("[%d] %s\n", i, patients.get(i));
-        }
-        System.out.println("Which Patient did you mean?");
-        int patNum = scnr.nextInt();
-        return patients.get(patNum);
-    }
-
-    public static void createNewPatient(Scanner scnr, Storage patientList){
-        System.out.print("Patient First Name: ");
-        String firstName = scnr.nextLine();
-        System.out.print("Patient Last Name");
-        String lastName = scnr.nextLine();
-        LocalDate birthday = getBirthdayFromScanner(scnr);
-        System.out.println("Enter the Patient's acuity score: ");
-        int acuity = scnr.nextInt();
-
-        patientList.add(new Patient(firstName, lastName, birthday, acuity));
     }
 
     public static void editPatientProblems(Scanner scnr, Storage patients, Patient target){
@@ -202,33 +190,44 @@ public class Main {
         }
     }
 
-    public static void editPatientInfo(Scanner scnr, Storage patients){
-        Patient target = findPatient(scnr, patients);
-        if (target == null) return;
-        System.out.println("What would you like to change?");
-        System.out.println("[0] Acuity");
-        System.out.println("[1] Provider");
-        System.out.println("[2] Problems List");
-        System.out.println("[9] Quit");
+    public static void createNewPatient(Scanner scnr, Storage patientList){
+        System.out.print("Patient First Name: ");
+        String firstName = scnr.nextLine();
+        System.out.print("Patient Last Name");
+        String lastName = scnr.nextLine();
+        LocalDate birthday = getBirthdayFromScanner(scnr);
+        System.out.println("Enter the Patient's acuity score: ");
+        int acuity = scnr.nextInt();
 
-        int i = scnr.nextInt();
-        if (i == 2)
-        {
-            editPatientProblems(scnr, patients, target);
-            return;
-        }
-        System.out.print("Enter the new value: ");
-        switch(i){
-            case 0 -> {
-                int newAcuity = scnr.nextInt();
-                target.setAcuity(newAcuity);
-            }
-            case 1 -> {
-                String newProvider = scnr.nextLine();
-                target.setProvider(newProvider);
-            }
+        patientList.add(new Patient(firstName, lastName, birthday, acuity));
+    }
 
+    public static Patient findPatient(Scanner scnr, Storage patients){
+        System.out.println("Enter a Patients Name: ");
+        String patName = scnr.nextLine();
+        ArrayList<Patient> found = new ArrayList<>();
+        for (Patient p1 : patients) {
+            if (p1.getName().contains(patName)) found.add(p1);
         }
+        if (found.size() == 0){
+            System.out.println("No patients with that name found");
+            return null;
+        } else if (found.size() == 1){
+            return found.get(0);
+        } else {
+            System.out.println("Multiple patients with that name were found,\nPlease select with one you want:");
+            return listAndGet(scnr, patients);
+        }
+    }
+
+    public static Patient listAndGet(Scanner scnr, Storage patients){
+
+        for (int i = 0; i < patients.size(); i++) {
+            System.out.printf("[%d] %s\n", i, patients.get(i));
+        }
+        System.out.println("Which Patient did you mean?");
+        int patNum = scnr.nextInt();
+        return patients.get(patNum);
     }
 
     public static LocalDate getBirthdayFromScanner(Scanner sc){
