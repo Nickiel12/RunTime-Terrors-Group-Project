@@ -8,7 +8,7 @@ import java.time.Period;
 public class Patient {
     private String firstName;
     private String lastName;
-    private LinkedList<String> problemList; // TODO this be a linked list
+    private LinkedList<String> problemList;
     private LocalDate birthday;
     private int acuity;
     private String provider;
