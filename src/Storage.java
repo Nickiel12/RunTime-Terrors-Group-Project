@@ -1,9 +1,10 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Storage {
-    private final String JSON_DIRECTORY = "Assets/Storage.json";  //file path of json storage
+    private final String JSON_DIRECTORY = "Assets/Storage.csv";  //file path of json storage
 
     private final ArrayList<Patient> list = new ArrayList(); //ArrayList of type patient
 
@@ -16,14 +17,17 @@ public class Storage {
         FileWriter clean = new FileWriter(JSON_DIRECTORY);
         FileWriter file = new FileWriter(JSON_DIRECTORY, true);
 
-        clean.append("");
+        clean.append("{firstName, lastName, birthday, ID, Acuity, [problems list]}");
         clean.close();
 
-        file.write("{\n");
+        file.write("\n{\n");
 
-        for (int i = 0; i < list.size() - 1; i++) {
-            file.append("  \"").append(String.valueOf(i)).append("\": {\n    \"name\": \"").append(list.get(i).getName()).append("\",\n    \"acuity\": \"").append(String.valueOf(list.get(i).getAcuity())).append("\",\n    \"provider\": \"").append(list.get(i).getProvider()).append("\"\n  }");
-            if (i != list.size() - 2) {
+        for (int i = 0; i < list.size(); i++) {
+
+
+
+            file.append("{ ").append(list.get(i).getFirstName()).append(", ").append(list.get(i).getLastName()).append(", ").append(list.get(i).getBirthday().toString()).append(", ").append(String.valueOf(list.get(i).getIdNumber())).append(", ").append(String.valueOf(list.get(i).getAcuity())).append(", ").append(list.get(i).getProblemList().toString()).append("}");
+            if (i != list.size() - 1) {
                 file.append(",\n");
             }
         }
@@ -39,50 +43,44 @@ public class Storage {
             return;
         }
         file.nextLine();
+        file.nextLine();
+        file.next();
 
         while (file.hasNext()) {
 
-            file.nextLine();
-            if (file.hasNext()) {   //prevents NoSuchElementException
-                file.next();
-            } else break;
-
-            String name = file.next();
+            String firstName = removeComma(file.next());
+            String lastName = removeComma(file.next());
+            LocalDate birthday = LocalDate.parse(removeComma(file.next()), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            int id = Integer.parseInt(removeComma(file.next()));
+            int acuity = Integer.parseInt(removeComma(file.next()));
+            LinkedList<String> problems = parseLinkedList(file.nextLine());
+            list.add(new Patient(firstName, lastName, birthday, id, acuity, problems));
             file.next();
-            String acuity = file.next();
-            file.next();
-            String provider = file.next();
-            file.next();
-            list.add(new Patient(removeQuotes(name), Integer.parseInt(removeQuotes(acuity)), removeQuotes(provider)));
-            file.nextLine();
         }
         System.out.println("LOADED SUCCESSFULLY");
     }
     //helps with load()
-    private String removeQuotes(String str) {
-        String newStr;
-        if (str.indexOf('\"') == 0) {
-             newStr = str.substring(1);  //removes first quote and everything before it
-
-            if (newStr.indexOf('\"') != -1) {
-                newStr = newStr.substring(0, newStr.indexOf('\"'));  //removes second quote and everything after it
-            } else {    // if failed then return original string
-                return str;
-            }
-        } else {        // if failed then return original string
-            return str;
-        }
-        return newStr;
+    private String removeComma(String str) {
+        return str.substring(0, str.length() - 1);
     }
-    //add a new patient
-    public void add(String name, int acuity, String provider) {
-        list.add(new Patient(name, acuity, provider));
+    private LinkedList<String> parseLinkedList(String str) {
+        if (str.length() <= 5) {
+            return new LinkedList<>();
+        }
+
+        str = str.substring(2, str.length() - 3);
+        String[] strA = str.split(",");
+
+        return new LinkedList<>(Arrays.asList(strA));
     }
     public void add(Patient patient) {
         list.add(patient);
     }
-    //Takes longer because arraylist
+    //Takes longer because arraylist TODO: change to use ID instead of index
     public void remove(int index) {
         list.remove(index);
+    }
+    public ArrayList<Patient> getList() {
+        return list;
     }
 }
