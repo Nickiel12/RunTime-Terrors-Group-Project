@@ -14,15 +14,22 @@ public class Patient {
     private static int idCounter = 100000;
     final LocalDate currentDate = LocalDate.now();
 
-    public Patient(){
-
-    }
-    public Patient(String name, LocalDate birthday, List<String> problemList, int idNumber, int acuityScore){
-        this.birthday = birthday;
+    public Patient(String firstName, String lastName){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = null;
+        this.acuity = 0;
+        this.idNumber = createID();
         this.problemList = new ArrayList<>();
-        this.idNumber = idNumber;
-        this.acuity = acuityScore;
+    }
 
+    public Patient(String firstName, String lastName, LocalDate birthday, int ID, int acuityScore, List<String> problems){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthday = birthday;
+        this.idNumber = ID;
+        this.acuity = acuityScore;
+        this.problemList = problems;
     }
 
     public static synchronized int createID(){
