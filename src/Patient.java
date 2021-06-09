@@ -12,6 +12,7 @@ public class Patient {
     private List<String> problemList;
     private LocalDate birthday;
     private int acuity;
+    private String provider;
     private int idNumber;
     private static int idCounter = 100000;
     final LocalDate currentDate = LocalDate.now();
@@ -71,6 +72,12 @@ public class Patient {
         return lastName;
     }
 
+    public void setProvider(String provider){
+        this.provider = provider;
+    }
+    public String getProvider(){
+        return provider;
+    }
 
     // Birthday
     public void setBirthday(Scanner sc) {
