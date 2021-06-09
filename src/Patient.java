@@ -17,19 +17,19 @@ public class Patient {
     final LocalDate currentDate = LocalDate.now();
 
     public Patient(String firstName, String lastName){
-        new Patient(firstName, lastName, null, 0, createID(), new ArrayList<>());
+        new Patient(firstName, lastName, null, 0, createID(), null);
     }
     public Patient(String firstName, String lastName, String birthday) throws DateTimeParseException{
-        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), 0, new ArrayList<>());
+        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), 0, null);
     }
     public Patient(String firstName, String lastName, int acuityScore){
-        new Patient(firstName, lastName, null, createID(), acuityScore, new ArrayList<>());
+        new Patient(firstName, lastName, null, createID(), acuityScore, null);
     }
     public Patient(String firstName, String lastName, String birthday, int acuityScore) throws DateTimeParseException {
-        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), acuityScore, new ArrayList<>());
+        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), acuityScore, null);
     }
     public Patient(String firstName, String lastName, LocalDate birthday, int acuityScore){
-        new Patient(firstName, lastName, birthday, createID(), acuityScore, new ArrayList<>());
+        new Patient(firstName, lastName, birthday, createID(), acuityScore, null);
     }
     public Patient(String firstName, String lastName, LocalDate birthday, int ID, int acuityScore, List<String> problems){
         this.firstName = firstName;
