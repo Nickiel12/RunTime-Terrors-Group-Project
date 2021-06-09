@@ -1,4 +1,6 @@
+
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -15,14 +17,20 @@ public class Patient {
     final LocalDate currentDate = LocalDate.now();
 
     public Patient(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthday = null;
-        this.acuity = 0;
-        this.idNumber = createID();
-        this.problemList = new ArrayList<>();
+        new Patient(firstName, lastName, null, 0, createID(), new ArrayList<>());
     }
-
+    public Patient(String firstName, String lastName, String birthday) throws DateTimeParseException{
+        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), 0, new ArrayList<>());
+    }
+    public Patient(String firstName, String lastName, int acuityScore){
+        new Patient(firstName, lastName, null, createID(), acuityScore, new ArrayList<>());
+    }
+    public Patient(String firstName, String lastName, String birthday, int acuityScore) throws DateTimeParseException {
+        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), acuityScore, new ArrayList<>());
+    }
+    public Patient(String firstName, String lastName, LocalDate birthday, int acuityScore){
+        new Patient(firstName, lastName, birthday, createID(), acuityScore, new ArrayList<>());
+    }
     public Patient(String firstName, String lastName, LocalDate birthday, int ID, int acuityScore, List<String> problems){
         this.firstName = firstName;
         this.lastName = lastName;
