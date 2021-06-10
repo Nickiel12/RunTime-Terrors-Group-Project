@@ -193,8 +193,8 @@ public class Patient {
     }
 
     public String toString(){
-        return String.format("%s, DOB: %s, Acuity Score: %d, ID: %d",
-                getName(), getBirthday().toString(), getAcuity(), getIdNumber());
+        return String.format("%s, DOB: %s, Acuity Score: %d, ID: %d, Provider: %s",
+                getName(), getBirthday().toString(), getAcuity(), getIdNumber(), getProvider());
     }
 
 

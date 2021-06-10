@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -47,16 +46,16 @@ public class Main {
     public static void viewPatients(Scanner scnr, Storage patients){
         Patient[] patients1 = patients.getList().toArray(Patient[]::new);
         System.out.println("Sort patients by: ");
-        System.out.println("[0] First Name");
-        System.out.println("[1] Last Name");
+        System.out.println("[0] Last Name");
+        System.out.println("[1] First Name");
         System.out.println("[2] By Acuity");
         System.out.println("[3] By provider");
 
         int i = scnr.nextInt();
         scnr.nextLine();
         switch (i) {
-            case 0 -> Arrays.sort(patients1, new PatientSortByFirstName());
-            case 1 -> Arrays.sort(patients1, new PatientSortByLastName());
+            case 0 -> Arrays.sort(patients1, new PatientSortByLastName());
+            case 1 -> Arrays.sort(patients1, new PatientSortByFirstName());
             case 2 -> Arrays.sort(patients1, new PatientSortByAcuity());
             case 3 -> Arrays.sort(patients1, new PatientSortByProvider());
         }
@@ -85,10 +84,9 @@ public class Main {
             case 0 -> {
                 System.out.print("Enter the Name you would like to search: ");
                 String name = scnr.nextLine();
-                for (Patient p :
-                        patients1) {
-                    //TODO add first last with comma
-                    if (p.getName().contains(name) || (p.getFirstName() + " " + p.getLastName()).contains(name)){
+                for (Patient p : patients1) {
+                    if (p.getName().contains(name) || (p.getFirstName() + " " + p.getLastName()).contains(name)
+                        || (p.getFirstName() + ", " + p.getLastName()).contains(name)){
                         found.add(p);
                     }
                 }
@@ -118,13 +116,14 @@ public class Main {
             target = listAndGet(scnr, found);
         } else if (found.size() == 1) target = found.get(0);
         else {
-            target = null;
             System.out.println("No Patients were found");
             return;
         }
-        System.out.println(target);
-        target.printProblemList();
-        System.out.println();
+        if (target != null) {
+            System.out.println(target);
+            target.printProblemList();
+            System.out.println();
+        }
         System.out.println("Press enter to continue");
         scnr.nextLine();
 
@@ -133,7 +132,7 @@ public class Main {
     public static void removePatient(Scanner scnr, Storage patients) {
         Patient target = findPatient(scnr, patients);
         if (target != null) {
-            System.out.println("Are you sure you would like to remove " + target.toString() + "? (y/n)");
+            System.out.println("Are you sure you would like to remove " + target + "? (y/n)");
             String answer = scnr.nextLine();
             if (answer.toLowerCase().startsWith("y")) {
                 patients.getList().remove(target);
@@ -159,7 +158,7 @@ public class Main {
         scnr.nextLine();
         if (i == 2)
         {
-            editPatientProblems(scnr, patients, target);
+            editPatientProblems(scnr, target);
             return;
         }
         System.out.print("Enter the new value: ");
@@ -173,11 +172,12 @@ public class Main {
                 String newProvider = scnr.nextLine();
                 target.setProvider(newProvider);
             }
-
         }
+        System.out.println("Would like to make another change? (y/n)");
+        if (scnr.nextLine().toLowerCase().startsWith("y")) editPatientProblems(scnr, target);
     }
 
-    public static void editPatientProblems(Scanner scnr, Storage patients, Patient target){
+    public static void editPatientProblems(Scanner scnr, Patient target){
         LinkedList<String> currentProblems = target.getProblemList();
         System.out.println("Would you like to remove or add problem to list?");
         System.out.println("[0] Remove index");
@@ -196,19 +196,10 @@ public class Main {
                 currentProblems.remove(i);
             } catch (IndexOutOfBoundsException e){
                 System.out.println("That index was out of bounds\nWould you like to try again?\n(y/n)");
-                if (scnr.next().toLowerCase().startsWith("y")) editPatientProblems(scnr, patients, target);
+                if (scnr.next().toLowerCase().startsWith("y")) editPatientProblems(scnr, target);
             }
         } else if (i == 1){
-            while (true){
-                System.out.println("Enter the new note, No commas allowed! (Q/q to quit)");
-                String newNote = scnr.nextLine();
-                if (newNote.toLowerCase().startsWith("q")) break;
-                if (newNote.contains(",")) System.out.println("Unacceptable entry! Remember, no commas");
-                else {
-                    currentProblems.add(newNote);
-                    break;
-                }
-            }
+            currentProblems.add(getProblemListNewProblem(scnr));
         }
     }
 
@@ -224,7 +215,15 @@ public class Main {
         System.out.print("Patient Provider: ");
         String provider = scnr.nextLine();
 
-        patientList.add(new Patient(firstName, lastName, birthday, provider, acuity));
+        Patient p = new Patient(firstName, lastName, birthday, provider, acuity);
+        patientList.add(p);
+
+        System.out.println("Anything to add to the Problems Chart? (y/n)");
+        if (scnr.nextLine().toLowerCase().startsWith("y")){
+            System.out.println("Enter an entry for the Problems Chart: ");
+            String next = getProblemListNewProblem(scnr);
+            if (next != null) p.getProblemList().add(next);
+        }
     }
 
     public static Patient findPatient(Scanner scnr, Storage patients){
@@ -253,6 +252,19 @@ public class Main {
         int patNum = scnr.nextInt();
         scnr.nextLine();
         return patients.get(patNum);
+    }
+
+    public static String getProblemListNewProblem(Scanner scnr){
+        while (true){
+            System.out.println("Enter the new note, No commas allowed! (Q/q to quit)");
+            String newNote = scnr.nextLine();
+            if (newNote.toLowerCase().startsWith("q")) break;
+            if (newNote.contains(",")) System.out.println("Unacceptable entry! Remember, no commas");
+            else {
+                return newNote;
+            }
+        }
+        return null;
     }
 
     public static LocalDate getBirthdayFromScanner(Scanner sc){
