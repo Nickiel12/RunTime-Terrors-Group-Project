@@ -1,5 +1,7 @@
 {firstName, lastName, birthday, ID, provider, Acuity, [problems list]}
 {
 { OS, Glad, 1970-01-01, 100000, Aperture Science, -3, [We don't know why she came - but she said she wanted to talk to a therapist about a potato]},
-{ Bob, Bobert, 2006-06-06, 100000, Dave, 6, []}
+{ Bob, Bobert, 2006-06-06, 100000, Stevenson & Dave, 5, [, Why is his name like this? What were his parents thinking!]},
+{ John, Dow, 2015-12-22, 100000, Bob, 2, []},
+{ Daryl, Jones, 2021-11-03, 100000, SpaceTimer Inc., 0, [He is from the future. So?, Maybe he knows if COVID is over?!]}
 }
