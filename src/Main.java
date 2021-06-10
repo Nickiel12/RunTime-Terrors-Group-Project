@@ -12,8 +12,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Scanner scnr = new Scanner(System.in);
 
-        // Using ArrayList instead of LinkedList because I am assuming
-        // that we will have random access more that adding and removing patients
         Storage patients = new Storage();
 
         System.out.println("Welcome to [Error: NotImplementedYet]");
@@ -48,6 +46,7 @@ public class Main {
 
     public static void viewPatients(Scanner scnr, Storage patients){
         Patient[] patients1 = patients.getList().toArray(Patient[]::new);
+        System.out.println("Sort patients by: ");
         System.out.println("[0] First Name");
         System.out.println("[1] Last Name");
         System.out.println("[2] By Acuity");
@@ -88,7 +87,8 @@ public class Main {
                 String name = scnr.nextLine();
                 for (Patient p :
                         patients1) {
-                    if (p.getName().contains(name)){
+                    //TODO add first last with comma
+                    if (p.getName().contains(name) || (p.getFirstName() + " " + p.getLastName()).contains(name)){
                         found.add(p);
                     }
                 }
@@ -136,7 +136,7 @@ public class Main {
             System.out.println("Are you sure you would like to remove " + target.toString() + "? (y/n)");
             String answer = scnr.nextLine();
             if (answer.toLowerCase().startsWith("y")) {
-                patients.remove(target);
+                patients.getList().remove(target);
             } else {
                 System.out.println("Removal aborted");
             }
@@ -218,11 +218,13 @@ public class Main {
         System.out.print("Patient Last Name: ");
         String lastName = scnr.nextLine();
         LocalDate birthday = getBirthdayFromScanner(scnr);
-        System.out.println("Enter the Patient's acuity score: ");
+        System.out.print("Enter the Patient's acuity score: ");
         int acuity = scnr.nextInt();
         scnr.nextLine();
+        System.out.print("Patient Provider: ");
+        String provider = scnr.nextLine();
 
-        patientList.add(new Patient(firstName, lastName, birthday, acuity));
+        patientList.add(new Patient(firstName, lastName, birthday, provider, acuity));
     }
 
     public static Patient findPatient(Scanner scnr, Storage patients){
