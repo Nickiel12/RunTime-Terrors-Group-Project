@@ -1,5 +1,5 @@
 {firstName, lastName, birthday, ID, provider, Acuity, [problems list]}
 {
-{ OS, Glad, 1970-01-01, 100000, Aperture Science, -3, [[[We don't know why she came - but she said she wanted to talk to a therapist about a potato]},
+{ OS, Glad, 1970-01-01, 100000, Aperture Science, -3, [We don't know why she came - but she said she wanted to talk to a therapist about a potato]},
 { Bob, Bobert, 2006-06-06, 100000, Dave, 6, []}
 }

@@ -109,6 +109,7 @@ public class Storage {
 
         str = str.substring(2, str.length() - 3);
         String[] strA = str.split(",");
+        strA[0] = strA[0].substring(1);
 
         return new LinkedList<>(Arrays.asList(strA));
     }
