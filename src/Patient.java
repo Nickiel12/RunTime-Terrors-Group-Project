@@ -17,25 +17,25 @@ public class Patient {
     final LocalDate currentDate = LocalDate.now();
 
     public Patient(String firstName, String lastName){
-        new Patient(firstName, lastName, null, createID(), "", 0, null);
+        this(firstName, lastName, null, createID(), "", 0, null);
     }
     public Patient(String firstName, String lastName, String birthday) throws DateTimeParseException{
-        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), null, 0, null);
+        this(firstName, lastName, LocalDate.parse(birthday), createID(), null, 0, null);
     }
     public Patient(String firstName, String lastName, int acuityScore){
-        new Patient(firstName, lastName, null, createID(), null, acuityScore, null);
+        this(firstName, lastName, null, createID(), null, acuityScore, null);
     }
     public Patient(String firstName, String lastName, String birthday, int acuityScore) throws DateTimeParseException {
-        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), null, acuityScore, null);
+        this(firstName, lastName, LocalDate.parse(birthday), createID(), null, acuityScore, null);
     }
     public Patient(String firstName, String lastName, LocalDate birthday, int acuityScore){
-        new Patient(firstName, lastName, birthday, createID(), null, acuityScore, null);
+        this(firstName, lastName, birthday, createID(), null, acuityScore, null);
     }
     public Patient(String firstName, String lastName, String birthday, String provider, int acuityScore) throws DateTimeParseException {
-        new Patient(firstName, lastName, LocalDate.parse(birthday), createID(), provider, acuityScore, null);
+        this(firstName, lastName, LocalDate.parse(birthday), createID(), provider, acuityScore, null);
     }
     public Patient(String firstName, String lastName, LocalDate birthday, String provider, int acuityScore){
-        new Patient(firstName, lastName, birthday, createID(), provider, acuityScore, null);
+        this(firstName, lastName, birthday, createID(), provider, acuityScore, null);
     }
     public Patient(String firstName, String lastName, LocalDate birthday, int ID, String provider, int acuityScore, LinkedList<String> problems){
         this.firstName = firstName;
@@ -43,7 +43,7 @@ public class Patient {
         this.birthday = birthday;
         this.idNumber = ID;
         this.acuity = acuityScore;
-        this.problemList = problems;
+        this.problemList = (problems == null) ? new LinkedList<>() : problems;
     }
 
     public static synchronized int createID(){

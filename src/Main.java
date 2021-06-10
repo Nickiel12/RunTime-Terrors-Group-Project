@@ -19,8 +19,6 @@ public class Main {
         System.out.println("Welcome to [Error: NotImplementedYet]");
         System.out.println("Please [Error: NotImplementedYet]");
 
-        System.out.println("\n");
-
         boolean doLoop = true;
         while (doLoop) {
             System.out.println("[0] View current patients");
@@ -30,9 +28,8 @@ public class Main {
             System.out.println("[4] Remove patient");
 
             System.out.println("[9] Quit");
-            System.out.println();
             int commandNum = scnr.nextInt();
-
+            scnr.nextLine();
             switch (commandNum) {
                 case 0 -> viewPatients(scnr, patients);
                 case 1 -> searchAndView(scnr, patients);
@@ -45,6 +42,7 @@ public class Main {
             System.out.println();
         }
 
+        patients.save();
         System.out.println("Real Doctors shouldn't treat Patients like Objects!!!");
     }
 
@@ -56,6 +54,7 @@ public class Main {
         System.out.println("[3] By provider");
 
         int i = scnr.nextInt();
+        scnr.nextLine();
         switch (i) {
             case 0 -> Arrays.sort(patients1, new PatientSortByFirstName());
             case 1 -> Arrays.sort(patients1, new PatientSortByLastName());
@@ -66,6 +65,8 @@ public class Main {
                 patients1) {
             System.out.println(p);
         }
+        System.out.println("Press Enter to continue: ");
+        scnr.nextLine();
 
     }
 
@@ -78,6 +79,7 @@ public class Main {
         System.out.println("[2] Search by Provider");
 
         int i = scnr.nextInt();
+        scnr.nextLine();
         switch(i){
             case 0 -> {
                 System.out.print("Enter the Name you would like to search: ");
@@ -129,6 +131,7 @@ public class Main {
 
     public static void editPatientInfo(Scanner scnr, Storage patients){
         Patient target = findPatient(scnr, patients);
+        System.out.println(target);
         if (target == null) return;
         System.out.println("What would you like to change?");
         System.out.println("[0] Acuity");
@@ -137,6 +140,7 @@ public class Main {
         System.out.println("[9] Quit");
 
         int i = scnr.nextInt();
+        scnr.nextLine();
         if (i == 2)
         {
             editPatientProblems(scnr, patients, target);
@@ -146,6 +150,7 @@ public class Main {
         switch(i){
             case 0 -> {
                 int newAcuity = scnr.nextInt();
+                scnr.nextLine();
                 target.setAcuity(newAcuity);
             }
             case 1 -> {
@@ -162,6 +167,7 @@ public class Main {
         System.out.println("[0] Remove index");
         System.out.println("[1] Add new");
         int i = scnr.nextInt();
+        scnr.nextLine();
 
         if (i == 0){
             int j = 0;
@@ -193,11 +199,12 @@ public class Main {
     public static void createNewPatient(Scanner scnr, Storage patientList){
         System.out.print("Patient First Name: ");
         String firstName = scnr.nextLine();
-        System.out.print("Patient Last Name");
+        System.out.print("Patient Last Name: ");
         String lastName = scnr.nextLine();
         LocalDate birthday = getBirthdayFromScanner(scnr);
         System.out.println("Enter the Patient's acuity score: ");
         int acuity = scnr.nextInt();
+        scnr.nextLine();
 
         patientList.add(new Patient(firstName, lastName, birthday, acuity));
     }
@@ -227,6 +234,7 @@ public class Main {
         }
         System.out.println("Which Patient did you mean?");
         int patNum = scnr.nextInt();
+        scnr.nextLine();
         return patients.get(patNum);
     }
 
@@ -237,12 +245,12 @@ public class Main {
             LocalDate ld = null;
             while(!dateCorrect){
                 try{
-                    System.out.println("Enter the date of birth (dd/MM/yyyy): ");
+                    System.out.println("Enter the date of birth (dd-MM-yyyy): ");
                     String dob = sc.next();
 
                     if (dob.toLowerCase().startsWith("q")) break;
 
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     ld = LocalDate.parse(dob, formatter);
                 } catch (Exception e){
                     System.out.println("I'm sorry, I wasn't able to parse that, please try again. (Enter Q/q to quit");

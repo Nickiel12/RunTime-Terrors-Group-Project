@@ -1,1 +1,5 @@
-
+{firstName, lastName, birthday, ID, Acuity, [problems list]}
+{
+{ John, Doe, 2002-01-18, 100000, 2, []},
+{ Billy, Dane, 2005-05-05, 100002, 30, [everything is broken! How is he still alive, He has lost more blood than a human body can hold. Yet he is still bleeding.]}
+}
