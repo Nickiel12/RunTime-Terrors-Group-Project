@@ -42,6 +42,7 @@ public class Patient {
         this.lastName = lastName;
         this.birthday = birthday;
         this.idNumber = ID;
+        this.provider = provider;
         this.acuity = acuityScore;
         this.problemList = (problems == null) ? new LinkedList<>() : problems;
     }
