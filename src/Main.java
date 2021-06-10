@@ -80,6 +80,8 @@ public class Main {
 
         int i = scnr.nextInt();
         scnr.nextLine();
+        ArrayList<Patient> found = new ArrayList<>();
+
         switch(i){
             case 0 -> {
                 System.out.print("Enter the Name you would like to search: ");
@@ -87,7 +89,7 @@ public class Main {
                 for (Patient p :
                         patients1) {
                     if (p.getName().contains(name)){
-                        System.out.println(p);
+                        found.add(p);
                     }
                 }
             }
@@ -96,7 +98,7 @@ public class Main {
                 int score = scnr.nextInt();
                 for (Patient p: patients1){
                     if (p.getAcuity() == score){
-                        System.out.println(p);
+                        found.add(p);
                     }
                 }
             }
@@ -106,11 +108,25 @@ public class Main {
                 for (Patient p :
                         patients1) {
                     if (p.getProvider().contains(name)){
-                        System.out.println(p);
+                        found.add(p);
                     }
                 }
             }
         }
+        Patient target;
+        if (found.size() > 1){
+            target = listAndGet(scnr, found);
+        } else if (found.size() == 1) target = found.get(0);
+        else {
+            target = null;
+            System.out.println("No Patients were found");
+            return;
+        }
+        System.out.println(target);
+        target.printProblemList();
+        System.out.println();
+        System.out.println("Press enter to continue");
+        scnr.nextLine();
 
     }
 
@@ -223,12 +239,11 @@ public class Main {
             return found.get(0);
         } else {
             System.out.println("Multiple patients with that name were found,\nPlease select with one you want:");
-            return listAndGet(scnr, patients);
+            return listAndGet(scnr, found);
         }
     }
 
-    public static Patient listAndGet(Scanner scnr, Storage patientsStorage){
-        ArrayList<Patient> patients = patientsStorage.getList();
+    public static Patient listAndGet(Scanner scnr, ArrayList<Patient> patients){
         for (int i = 0; i < patients.size(); i++) {
             System.out.printf("[%d] %s\n", i, patients.get(i));
         }
