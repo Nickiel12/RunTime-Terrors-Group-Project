@@ -6,27 +6,40 @@ import java.util.*;
 public class Storage {
     private final String JSON_DIRECTORY = "Assets/Storage.csv";  //file path of json storage
 
-    private final ArrayList<Patient> list = new ArrayList<>(); //ArrayList of type patient
+    private final ArrayList<Patient> list = new ArrayList(); //ArrayList of type patient
 
     //Starts storage and loads
     public Storage() throws IOException {
         load();
     }
-    //Saves patient info from ArrayList to JSON file
+    //Saves patient info from ArrayList to csv file
     public void save() throws IOException {
         FileWriter clean = new FileWriter(JSON_DIRECTORY);
         FileWriter file = new FileWriter(JSON_DIRECTORY, true);
 
-        clean.append("{firstName, lastName, birthday, ID, Acuity, [problems list]}");
+        clean.append("{firstName, lastName, birthday, ID, provider, Acuity, [problems list]}");
         clean.close();
 
         file.write("\n{\n");
 
         for (int i = 0; i < list.size(); i++) {
+            file.append("{ ");
+            file.append(list.get(i).getFirstName()).append(", ");
+            file.append(list.get(i).getLastName()).append(", ");
+            if (list.get(i).getBirthday() != null) {
+                file.append(list.get(i).getBirthday().toString()).append(", ");
+            } else {
+                file.append("null, ");
+            }
+            file.append(String.valueOf(list.get(i).getIdNumber())).append(", ");
+            if (list.get(i).getProvider() != null) {
+                file.append(list.get(i).getProvider()).append(", ");
+            } else {
+                file.append("null, ");
+            }
+            file.append(String.valueOf(list.get(i).getAcuity())).append(", ");
+            file.append(list.get(i).getProblemList().toString()).append("}");
 
-
-
-            file.append("{ ").append(list.get(i).getFirstName()).append(", ").append(list.get(i).getLastName()).append(", ").append(list.get(i).getBirthday().toString()).append(", ").append(String.valueOf(list.get(i).getIdNumber())).append(", ").append(String.valueOf(list.get(i).getAcuity())).append(", ").append(list.get(i).getProblemList().toString()).append("}");
             if (i != list.size() - 1) {
                 file.append(",\n");
             }
@@ -50,11 +63,33 @@ public class Storage {
 
             String firstName = removeComma(file.next());
             String lastName = removeComma(file.next());
-            LocalDate birthday = LocalDate.parse(removeComma(file.next()), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            //checks if null
+            String sBirthday = removeComma(file.next());
+            LocalDate birthday;
+            if (!sBirthday.equals("null")) {
+                birthday = LocalDate.parse(sBirthday, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            } else {
+                birthday = null;
+            }
             int id = Integer.parseInt(removeComma(file.next()));
+            //checks if null
+            String tProvider = removeComma(file.next());
+            String provider;
+            if (!tProvider.equals("null")) {
+                provider = tProvider;
+            } else {
+                provider = null;
+            }
             int acuity = Integer.parseInt(removeComma(file.next()));
-            LinkedList<String> problems = parseLinkedList(file.nextLine());
-            list.add(new Patient(firstName, lastName, birthday, id, null, acuity, problems));
+            //checks if null
+            String tProblems = file.nextLine();
+            LinkedList<String> problems;
+            if (!tProblems.equals(" null}")) {
+                problems = parseLinkedList(tProblems);
+            } else {
+                problems = null;
+            }
+            list.add(new Patient(firstName, lastName, birthday, id, provider, acuity, problems));
             file.next();
         }
         System.out.println("LOADED SUCCESSFULLY");
@@ -76,11 +111,10 @@ public class Storage {
     public void add(Patient patient) {
         list.add(patient);
     }
-    //Takes longer because arraylist TODO: change to use ID instead of index
+    //Takes longer because arraylist
     public void remove(int index) {
         list.remove(index);
     }
-    public void remove(Patient p){list.remove(p);}
     public ArrayList<Patient> getList() {
         return list;
     }
