@@ -6,7 +6,7 @@ import java.util.*;
 public class Storage {
     private final String JSON_DIRECTORY = "Assets/Storage.csv";  //file path of json storage
 
-    private final ArrayList<Patient> list = new ArrayList(); //ArrayList of type patient
+    private final ArrayList<Patient> list = new ArrayList<>(); //ArrayList of type patient
 
     //Starts storage and loads
     public Storage() throws IOException {
@@ -54,7 +54,7 @@ public class Storage {
             int id = Integer.parseInt(removeComma(file.next()));
             int acuity = Integer.parseInt(removeComma(file.next()));
             LinkedList<String> problems = parseLinkedList(file.nextLine());
-            list.add(new Patient(firstName, lastName, birthday, id, acuity, problems));
+            list.add(new Patient(firstName, lastName, birthday, id, null, acuity, problems));
             file.next();
         }
         System.out.println("LOADED SUCCESSFULLY");
@@ -80,6 +80,7 @@ public class Storage {
     public void remove(int index) {
         list.remove(index);
     }
+    public void remove(Patient p){list.remove(p);}
     public ArrayList<Patient> getList() {
         return list;
     }
