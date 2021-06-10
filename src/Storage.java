@@ -61,26 +61,31 @@ public class Storage {
 
         while (file.hasNext()) {
 
-            String firstName = removeComma(file.next());
-            String lastName = removeComma(file.next());
+            // This is the magic sauce:
+            // This RegularExpression basically says, "Hey, it's a match when
+            // it is a {comma followed by a space} a {open bracket followed by a space}
+            // a {closed bracket followed by no or more commas}
+            file.useDelimiter(",\s|\\{\s|}(,*)");
+            String firstName = file.next().strip();
+            String lastName = file.next();
             //checks if null
-            String sBirthday = removeComma(file.next());
+            String sBirthday = file.next();
             LocalDate birthday;
             if (!sBirthday.equals("null")) {
                 birthday = LocalDate.parse(sBirthday, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             } else {
                 birthday = null;
             }
-            int id = Integer.parseInt(removeComma(file.next()));
+            int id = Integer.parseInt(file.next());
             //checks if null
-            String tProvider = removeComma(file.next());
+            String tProvider = file.next();
             String provider;
             if (!tProvider.equals("null")) {
                 provider = tProvider;
             } else {
                 provider = null;
             }
-            int acuity = Integer.parseInt(removeComma(file.next()));
+            int acuity = Integer.parseInt(file.next());
             //checks if null
             String tProblems = file.nextLine();
             LinkedList<String> problems;
@@ -90,7 +95,6 @@ public class Storage {
                 problems = null;
             }
             list.add(new Patient(firstName, lastName, birthday, id, provider, acuity, problems));
-            file.next();
         }
         System.out.println("LOADED SUCCESSFULLY");
     }
