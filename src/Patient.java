@@ -197,5 +197,11 @@ public class Patient {
                 getName(), getBirthday().toString(), getAcuity(), getIdNumber(), getProvider());
     }
 
+    public static void setIdCounter(int idCounter) {
+        Patient.idCounter = idCounter;
+    }
 
+    public static int getIdCounter() {
+        return idCounter;
+    }
 }
