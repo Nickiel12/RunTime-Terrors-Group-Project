@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Storage {
-    private final String JSON_DIRECTORY = "Assets/Storage.csv";  //file path of json storage
+    private final String CSV_DIRECTORY = "Assets/Storage.csv";  //file path of csv storage
 
     private final ArrayList<Patient> list = new ArrayList(); //ArrayList of type patient
 
@@ -14,13 +14,13 @@ public class Storage {
     }
     //Saves patient info from ArrayList to csv file
     public void save() throws IOException {
-        FileWriter clean = new FileWriter(JSON_DIRECTORY);
-        FileWriter file = new FileWriter(JSON_DIRECTORY, true);
+        FileWriter clean = new FileWriter(CSV_DIRECTORY);
+        FileWriter file = new FileWriter(CSV_DIRECTORY, true);
 
         clean.append("{firstName, lastName, birthday, ID, provider, Acuity, [problems list]}");
         clean.close();
 
-        file.write("\n{\n");
+        file.write("\n{ " + Patient.getIdCounter() +"\n");
 
         for (int i = 0; i < list.size(); i++) {
             file.append("{ ");
@@ -50,14 +50,34 @@ public class Storage {
     //loads all patient info into arraylist
     public void load() throws FileNotFoundException {
         System.out.println("LOADING...");
-        Scanner file = new Scanner(new FileInputStream(JSON_DIRECTORY));
+        Scanner file = new Scanner(new FileInputStream(CSV_DIRECTORY));
+
         if (!file.hasNext()) {
             System.out.println("File is empty");
             return;
         }
         file.nextLine();
-        file.nextLine();
+        if (!file.hasNext()) {
+            System.out.println("File is empty");
+            return;
+        }
         file.next();
+        String idNum = file.next();
+        if (idNum.equals("{")) {
+            System.out.println("Error: no ID number was saved");
+        } else {
+            try {
+                Patient.setIdCounter(Integer.parseInt(idNum));
+            }
+            catch (Exception e) {
+                System.out.println("File is empty");
+                return;
+            }
+            if (file.next().equals("}")) {
+                System.out.println("File is empty");
+                return;
+            }
+        }
 
         while (file.hasNext()) {
 
@@ -118,7 +138,11 @@ public class Storage {
     }
     //Takes longer because arraylist
     public void remove(int index) {
-        list.remove(index);
+        try {
+            list.remove(index);
+        } catch (Exception e) {
+            System.out.println("invalid index");
+        }
     }
     public ArrayList<Patient> getList() {
         return list;
