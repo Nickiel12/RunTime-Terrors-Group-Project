@@ -6,15 +6,32 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+// TODO standardize and error catch user-inputs
+// TODO Patient Search ID
+
 public class Main {
 
     public static void main(String[] args) throws IOException {
+
+        //Employee(String firstName, String lastName, LocalDate birthday, String title)
+        ArrayList<Employee> employees = new ArrayList<>();
+        employees.add(new Employee("Kathrine", "Watkins",
+                LocalDate.of(1950, 6, 5), "Head Doctor"));
+        employees.add(new Employee("Colin", "Wilkins",
+                LocalDate.of(2055, 5, 24), "Lead Tech"));
+        employees.add(new Employee("Nicholas", "Young",
+                LocalDate.of(2000, 5, 23), "Psychoanologist"));
+        employees.add(new Employee("St.", "Nick",
+                null, "Head of Pediatrics"));
+        employees.add(new Employee("Jack", "Frost",
+                null, "Cryogenics Researcher"));
+        //employees.add(new Employee(""))
         Scanner scnr = new Scanner(System.in);
 
         Storage patients = new Storage();
 
-        System.out.println("Welcome to [Error: NotImplementedYet]");
-        System.out.println("Please [Error: NotImplementedYet]");
+        System.out.println("Welcome to the RunTime Terrors Patient Tracking Software");
+        System.out.println("Follow the prompts to navigate\n");
 
         boolean doLoop = true;
         while (doLoop) {
@@ -23,6 +40,8 @@ public class Main {
             System.out.println("[2] Edit patient info");
             System.out.println("[3] Add patient");
             System.out.println("[4] Remove patient");
+            System.out.println("[5] View working employees");
+
 
             System.out.println("[9] Quit");
             int commandNum = scnr.nextInt();
@@ -33,6 +52,7 @@ public class Main {
                 case 2 -> editPatientInfo(scnr, patients);
                 case 3 -> createNewPatient(scnr, patients);
                 case 4 -> removePatient(scnr, patients);
+                case 5 -> viewEmployees(scnr, employees);
 
                 case 9 -> doLoop = false;
             }
@@ -41,6 +61,17 @@ public class Main {
 
         patients.save();
         System.out.println("Real Doctors shouldn't treat Patients like Objects!!!");
+    }
+
+    public static void viewEmployees(Scanner scnr, ArrayList<Employee> employees){
+        System.out.println("Employees on the clock:");
+        System.out.println("Name              ID     Birthdate  Title");
+        for (Employee e :
+                employees) {
+            System.out.println(e);
+        }
+        System.out.println("\nPress Enter to return to menu");
+        scnr.nextLine();
     }
 
     public static void viewPatients(Scanner scnr, Storage patients){
