@@ -79,13 +79,13 @@ public class Storage {
             }
         }
 
+        // This is the magic sauce:
+        // This RegularExpression basically says, "Hey, it's a match when
+        // it is a {comma followed by a space} a {open bracket followed by a space}
+        // a {closed bracket followed by no or more commas}
+        file.useDelimiter(",\s|\\{\s|}(,*)");
         while (file.hasNext()) {
 
-            // This is the magic sauce:
-            // This RegularExpression basically says, "Hey, it's a match when
-            // it is a {comma followed by a space} a {open bracket followed by a space}
-            // a {closed bracket followed by no or more commas}
-            file.useDelimiter(",\s|\\{\s|}(,*)");
             String firstName = file.next().strip();
             String lastName = file.next();
             //checks if null
