@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 // TODO standardize and error catch user-inputs
-// TODO Patient Search ID
 
 public class Main {
 
