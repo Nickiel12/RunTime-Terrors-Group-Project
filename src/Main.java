@@ -49,7 +49,7 @@ public class Main {
             switch (commandNum) {
                 case 0 -> viewPatients(scnr, patients);
                 case 1 -> searchAndView(scnr, patients);
-                case 2 -> editPatientInfo(scnr, patients);
+                case 2 -> editPatientInfo(scnr, patients, employees);
                 case 3 -> createNewPatient(scnr, patients);
                 case 4 -> removePatient(scnr, patients);
                 case 5 -> viewEmployees(scnr, employees);
@@ -91,7 +91,7 @@ public class Main {
             case 3 -> patients1.sort(new PatientSortByProvider());
         }
 
-        Patient target = listAndGet(scnr, patients1);
+        Patient target = listAndGetPatient(scnr, patients1);
         if (target != null) {
             System.out.println(target);
             target.printProblemList();
@@ -107,7 +107,8 @@ public class Main {
         Arrays.sort(patients1, new PatientSortByAcuity());
         System.out.println("[0] Search by Name");
         System.out.println("[1] Search by Acuity");
-        System.out.println("[2] Search by Provider");
+        System.out.println("[2] Search by ID");
+        System.out.println("[3] Search by Provider");
 
         int i = scnr.nextInt();
         scnr.nextLine();
@@ -134,6 +135,15 @@ public class Main {
                 }
             }
             case 2 -> {
+                System.out.print("Enter the ID of the patient: ");
+                int id = scnr.nextInt();
+                for (Patient p: patients1){
+                    if (p.getIdNumber() == id){
+                        found.add(p);
+                    }
+                }
+            }
+            case 3 -> {
                 System.out.print("Enter the Provider you would like to search: ");
                 String name = scnr.nextLine();
                 for (Patient p :
@@ -146,7 +156,7 @@ public class Main {
         }
         Patient target;
         if (found.size() > 1){
-            target = listAndGet(scnr, found);
+            target = listAndGetPatient(scnr, found);
         } else if (found.size() == 1) target = found.get(0);
         else {
             System.out.println("No Patients were found");
@@ -177,7 +187,7 @@ public class Main {
         }
     }
 
-    public static void editPatientInfo(Scanner scnr, Storage patients){
+    public static void editPatientInfo(Scanner scnr, Storage patients, ArrayList<Employee> employees){
         Patient target = findPatient(scnr, patients);
         System.out.println(target);
         if (target == null) return;
@@ -202,8 +212,8 @@ public class Main {
                 target.setAcuity(newAcuity);
             }
             case 1 -> {
-                String newProvider = scnr.nextLine();
-                target.setProvider(newProvider);
+                Employee newProvider = listAndGetEmployee(scnr, employees);
+                target.setProvider(newProvider.getFirstName() + " " + newProvider.getLastName());
             }
         }
         System.out.println("Would like to make another change? (y/n)");
@@ -273,11 +283,11 @@ public class Main {
             return found.get(0);
         } else {
             System.out.println("Multiple patients with that name were found,\nPlease select with one you want:");
-            return listAndGet(scnr, found);
+            return listAndGetPatient(scnr, found);
         }
     }
 
-    public static Patient listAndGet(Scanner scnr, ArrayList<Patient> patients){
+    public static Patient listAndGetPatient(Scanner scnr, ArrayList<Patient> patients){
         for (int i = 0; i < patients.size(); i++) {
             System.out.printf("[%d] %s\n", i, patients.get(i));
         }
@@ -285,6 +295,16 @@ public class Main {
         int patNum = scnr.nextInt();
         scnr.nextLine();
         return patients.get(patNum);
+    }
+    public static Employee listAndGetEmployee(Scanner scnr, ArrayList<Employee> employees){
+        System.out.println("[-1] Null");
+        for (int i = 0; i < employees.size(); i++) {
+            System.out.printf("[%d] %s\n", i, employees.get(i));
+        }
+        System.out.println("Which employee did you mean?");
+        int patNum = scnr.nextInt();
+        scnr.nextLine();
+        return employees.get(patNum);
     }
 
     public static String getProblemListNewProblem(Scanner scnr){
