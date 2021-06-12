@@ -1,7 +1,28 @@
 {firstName, lastName, birthday, ID, provider, Acuity, [problems list]}
-{
+{ 100000
+{ Park, Seongbeom (Aaron), 2000-06-25, 100001, null, 2, [Stuck in infinite loop - forgot exit clause]},
+{ Alcatara-Ramos, Emilio, 2005-12-09, 100002, null, 10, [was both true and false]},
+{ Birdsall, Tyler, 2001-05-30, 100003, null, 5, [is null]},
+{ Cornett, Salina, 1999-02-02, 100004, null, 3, [Stuck in queue]},
+{ Dao, Jeremby, 2003-01-05, 100005, null, 1, [Stabbed by mouse pointer]},
+{ Dorn, Ryker, 1997-09-18, 100006, null, 2, [Broken ankle]},
+{ Duncan, Chloe, 1998-11-06, 100007, null, 8, [Took too large a byte]},
+{ Forkner, Professor, 1973-03-23, 100008, null, 3, [delta V over delta T was too high]},
+{ Hines, Xavier, 2000-01-01, 100009, null, 8, [Broke his humerus]},
+{ Li, Yingle, 1999-05-24, 100010, null, 5, [Linked List got tangled]},
+{ Martinez, Makai, 2003-08-12, 100011, null, 10, [Forgot to water Binary Tree]},
+{ Morgan, Brandon, 1998-05-06, 100012, null, 9, [Bugged out]},
+{ Murrell, Benjamin, 1998-03-23, 100013, null, 10, [Stack fell on them]},
+{ Neighbors, Nathan, 1997-11-25, 100014, null, 5, [Accidentally set doBreath to false]},
+{ Newkirk, Jasper, 1975-04-16, 100015, null, 8, [We don't know what he did - but we have our best experts working it]},
+{ Pham, Hoang, 1996-07-15, 100016, null, 6, [Pushed untested code to production]},
+{ Rubio, Mark Andrey, 2000-12-04, 100017, null, 7, [Was using JavaScript instead of Java]},
+{ Srey, Angel, 1999-09-09, 100018, null, 3, [StackOverflowError]},
+{ Stavros, Alexander, 2001-09-28, 100019, null, 1, [Set keyboard to Dvorak without knowing]},
+{ Tran, Vivian, 2001-05-26, 100020, null, 6, [Concussion from banging head on desk]},
 { OS, Glad, 1970-01-01, 100000, Aperture Science, -3, [We don't know why she came - but she said she wanted to talk to a therapist about a potato]},
-{ Bob, Bobert, 2006-06-06, 100000, Stevenson & Dave, 5, [, Why is his name like this? What were his parents thinking!]},
-{ John, Dow, 2015-12-22, 100000, Bob, 2, []},
-{ Daryl, Jones, 2021-11-03, 100000, SpaceTimer Inc., 0, [He is from the future. So?, Maybe he knows if COVID is over?!]}
-}
+{ Watkins, Kathrine, 1987-07-03, 100021, null, 4, [Had too much java]},
+{ Wilkins, Collin, 2001-05-09, 100022, null, 5, [TODO: make a funny message]},
+{ Wood, Jordan, 1999-06-18, 100023, null, 5, [Random Generator ran out of gas]},
+{ Young, Nicholas, 2002-01-17, 100025, null, 7, [Needs a psych-eval: came in ranting about a rubber duck]},
+{ Hopper, Grace, 1906-12-06, 100026, null, 5, [Bug in computer]}
