@@ -146,7 +146,7 @@ public class Employee{
     }
 
     public String toString(){
-       return (firstName + " " + lastName + " " + empIdNumber + " " + birthday + " " + title);
+       return String.format("%-17s %d %-10s %s", firstName + " " + lastName, empIdNumber, birthday, title);
     }
 }
 
