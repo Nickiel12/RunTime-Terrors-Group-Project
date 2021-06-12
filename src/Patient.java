@@ -145,9 +145,8 @@ public class Patient {
     public LinkedList<String> getProblemList(){return problemList;}
     public void printProblemList(){
         System.out.println("Problem List: ");
-        for (String s :
-                problemList) {
-            System.out.println(s);
+        for (String s : problemList) {
+            System.out.println("\t " + s);
         }
     }
 
