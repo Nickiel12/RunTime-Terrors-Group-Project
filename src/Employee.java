@@ -17,19 +17,19 @@ public class Employee{
        new Employee(firstName, lastName, createID(), birthday, null);
     }
     public Employee(String firstName, String lastName, int ID){
-       new Employee(firstName, lastName, ID, null, null);
+       this(firstName, lastName, ID, null, null);
     }
     public Employee(String firstName, String lastName){
-       new Employee(firstName, lastName, createID(), null, null);
+       this(firstName, lastName, createID(), null, null);
     }
     public Employee(String firstName, String lastName, String title){
-       new Employee(firstName, lastName, createID(), null, title);
+       this(firstName, lastName, createID(), null, title);
     }
     public Employee(String firstName, String lastName, int ID, String title){
-       new Employee(firstName, lastName, ID, null, title);
+       this(firstName, lastName, ID, null, title);
     }
     public Employee(String firstName, String lastName, LocalDate birthday, String title){
-       new Employee(firstName, lastName, createID(), birthday, title);
+       this(firstName, lastName, createID(), birthday, title);
     }
 
     public Employee(String firstName, String lastName, int ID, LocalDate birthday, String title){
@@ -143,6 +143,10 @@ public class Employee{
     }
     public void printTitle(){
         System.out.println("Job Title: " + title);
+    }
+
+    public String toString(){
+       return (firstName + " " + lastName + " " + empIdNumber + " " + birthday + " " + title);
     }
 }
 
