@@ -40,12 +40,13 @@ public class Main {
             System.out.println("[3] Add patient");
             System.out.println("[4] Remove patient");
             System.out.println("[5] View working employees");
+            System.out.println("[-1] Return to main menu");
 
 
             System.out.println("[9] Quit");
-            int commandNum = scnr.nextInt();
-            scnr.nextLine();
+            int commandNum = getInputNumber(scnr);
             switch (commandNum) {
+                case -1 -> {System.out.println("Returning to main menu"); return;}
                 case 0 -> viewPatients(scnr, patients);
                 case 1 -> searchAndView(scnr, patients);
                 case 2 -> editPatientInfo(scnr, patients, employees);
@@ -54,6 +55,7 @@ public class Main {
                 case 5 -> viewEmployees(scnr, employees);
 
                 case 9 -> doLoop = false;
+                default -> System.out.println("Whoops! I didn't recognize that command! Please try again.");
             }
             System.out.println();
         }
@@ -62,11 +64,25 @@ public class Main {
         System.out.println("Real Doctors shouldn't treat Patients like Objects!!!");
     }
 
+    public static int getInputNumber(Scanner scnr){
+        boolean doExit = false;
+        int output = 0;
+        while(!doExit){
+            try {
+                output = scnr.nextInt();
+                doExit = true;
+            } catch (Exception e){
+                System.out.println("Whoops! I didn't catch that number. Please try again");
+            }
+        }
+        scnr.nextLine();
+        return output;
+    }
+
     public static void viewEmployees(Scanner scnr, ArrayList<Employee> employees){
         System.out.println("Employees on the clock:");
         System.out.println("Name              ID     Birthdate  Title");
-        for (Employee e :
-                employees) {
+        for (Employee e : employees) {
             System.out.println(e);
         }
         System.out.println("\nPress Enter to return to menu");
@@ -80,14 +96,16 @@ public class Main {
         System.out.println("[1] First Name");
         System.out.println("[2] By Acuity");
         System.out.println("[3] By provider");
+        System.out.println("[-1] Return to main menu");
 
-        int i = scnr.nextInt();
-        scnr.nextLine();
+        int i = getInputNumber(scnr);
         switch (i) {
+            case -1 -> {System.out.println("Returning to main menu"); return;}
             case 0 -> patients1.sort(new PatientSortByLastName());
             case 1 -> patients1.sort(new PatientSortByFirstName());
             case 2 -> patients1.sort(new PatientSortByAcuity());
             case 3 -> patients1.sort(new PatientSortByProvider());
+            default -> System.out.println("I didn't recognize that command. Returning to main menu");
         }
 
         Patient target = listAndGetPatient(scnr, patients1);
@@ -96,7 +114,7 @@ public class Main {
             target.printProblemList();
             System.out.println();
         }
-        System.out.println("Press enter to continue");
+        System.out.println("Press enter to continue to main menu");
         scnr.nextLine();
     }
 
@@ -108,12 +126,13 @@ public class Main {
         System.out.println("[1] Search by Acuity");
         System.out.println("[2] Search by ID");
         System.out.println("[3] Search by Provider");
+        System.out.println("[-1] Return to main menu");
 
-        int i = scnr.nextInt();
-        scnr.nextLine();
+        int i = getInputNumber(scnr);
         ArrayList<Patient> found = new ArrayList<>();
 
         switch(i){
+            case -1 -> {System.out.println("Returning to main menu"); return;}
             case 0 -> {
                 System.out.print("Enter the Name you would like to search: ");
                 String name = scnr.nextLine();
@@ -126,7 +145,7 @@ public class Main {
             }
             case 1 -> {
                 System.out.print("Enter the Acuity score: ");
-                int score = scnr.nextInt();
+                int score = getInputNumber(scnr);
                 for (Patient p: patients1){
                     if (p.getAcuity() == score){
                         found.add(p);
@@ -135,7 +154,7 @@ public class Main {
             }
             case 2 -> {
                 System.out.print("Enter the ID of the patient: ");
-                int id = scnr.nextInt();
+                int id = getInputNumber(scnr);
                 for (Patient p: patients1){
                     if (p.getIdNumber() == id){
                         found.add(p);
@@ -145,8 +164,7 @@ public class Main {
             case 3 -> {
                 System.out.print("Enter the Provider you would like to search: ");
                 String name = scnr.nextLine();
-                for (Patient p :
-                        patients1) {
+                for (Patient p : patients1) {
                     if (p.getProvider().contains(name)){
                         found.add(p);
                     }
@@ -194,19 +212,16 @@ public class Main {
         System.out.println("[0] Acuity");
         System.out.println("[1] Provider");
         System.out.println("[2] Problems List");
-        System.out.println("[9] Quit");
+        System.out.println("[-1] Return to main menu");
 
-        int i = scnr.nextInt();
-        scnr.nextLine();
-        if (i == 2)
-        {
-            editPatientProblems(scnr, target);
-            return;
-        }
+        int i = getInputNumber(scnr);
+        if (i == -1) {System.out.println("Returning to main menu"); return;}
+        if (i == 2) { editPatientProblems(scnr, target); return; }
+
         System.out.print("Enter the new value: ");
         switch(i){
             case 0 -> {
-                int newAcuity = scnr.nextInt();
+                int newAcuity = getInputNumber(scnr);
                 scnr.nextLine();
                 target.setAcuity(newAcuity);
             }
@@ -224,16 +239,17 @@ public class Main {
         System.out.println("Would you like to remove or add problem to list?");
         System.out.println("[0] Remove index");
         System.out.println("[1] Add new");
-        int i = scnr.nextInt();
-        scnr.nextLine();
+        System.out.println("[-1] Return to main menu");
+        int i = getInputNumber(scnr);
 
+        if (i == -1){System.out.println("Returning to main menu"); return;}
         if (i == 0){
             int j = 0;
             for (String s :
                     currentProblems) {
                 System.out.printf("[%d] %s", j++, s);
             }
-            i = scnr.nextInt();
+            i = getInputNumber(scnr);
             try{
                 currentProblems.remove(i);
             } catch (IndexOutOfBoundsException e){
@@ -252,7 +268,7 @@ public class Main {
         String lastName = scnr.nextLine();
         LocalDate birthday = getBirthdayFromScanner(scnr);
         System.out.print("Enter the Patient's acuity score: ");
-        int acuity = scnr.nextInt();
+        int acuity = getInputNumber(scnr);
         scnr.nextLine();
         System.out.print("Patient Provider: ");
         String provider = scnr.nextLine();
@@ -291,17 +307,18 @@ public class Main {
             System.out.printf("[%d] %s\n", i, patients.get(i));
         }
         System.out.println("Which Patient did you mean?");
-        int patNum = scnr.nextInt();
+        int patNum = getInputNumber(scnr);
         scnr.nextLine();
         return patients.get(patNum);
     }
+
     public static Employee listAndGetEmployee(Scanner scnr, ArrayList<Employee> employees){
         System.out.println("[-1] Null");
         for (int i = 0; i < employees.size(); i++) {
             System.out.printf("[%d] %s\n", i, employees.get(i));
         }
         System.out.println("Which employee did you mean?");
-        int patNum = scnr.nextInt();
+        int patNum = getInputNumber(scnr);
         scnr.nextLine();
         return employees.get(patNum);
     }
@@ -326,7 +343,7 @@ public class Main {
             LocalDate ld = null;
             while(!dateCorrect){
                 try{
-                    System.out.println("Enter the date of birth (dd-MM-yyyy): ");
+                    System.out.println("Enter the date of birth (DD-MM-YYYY): ");
                     String dob = sc.next();
 
                     if (dob.toLowerCase().startsWith("q")) break;
@@ -334,7 +351,8 @@ public class Main {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     ld = LocalDate.parse(dob, formatter);
                 } catch (Exception e){
-                    System.out.println("I'm sorry, I wasn't able to parse that, please try again. (Enter Q/q to quit");
+                    System.out.println("I'm sorry, I wasn't able to parse that, please try again." +
+                            "Remember to include the dashes, DD-MM-YYYY (Enter Q/q to quit");
                     continue;
                 }
                 dateCorrect = true;
