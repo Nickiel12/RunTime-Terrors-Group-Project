@@ -50,7 +50,9 @@ public class Storage {
     //loads all patient info into arraylist
     public void load() throws FileNotFoundException {
         System.out.println("LOADING...");
+
         Scanner file = new Scanner(new FileInputStream(CSV_DIRECTORY));
+        boolean IDPresent = true;
 
         if (!file.hasNext()) {
             System.out.println("File is empty");
@@ -64,6 +66,7 @@ public class Storage {
         file.next();
         String idNum = file.next();
         if (idNum.equals("{")) {
+            IDPresent = false;
             System.out.println("Error: no ID number was saved");
         } else {
             try {
@@ -79,13 +82,13 @@ public class Storage {
             }
         }
 
-        // This is the magic sauce:
-        // This RegularExpression basically says, "Hey, it's a match when
-        // it is a {comma followed by a space} a {open bracket followed by a space}
-        // a {closed bracket followed by no or more commas}
-        file.useDelimiter(",\s|\\{\s|}(,*)");
         while (file.hasNext()) {
 
+            // This is the magic sauce:
+            // This RegularExpression basically says, "Hey, it's a match when
+            // it is a {comma followed by a space} a {open bracket followed by a space}
+            // a {closed bracket followed by no or more commas}
+            file.useDelimiter(",\s|\\{\s|}(,*)");
             String firstName = file.next().strip();
             String lastName = file.next();
             //checks if null
@@ -116,12 +119,12 @@ public class Storage {
             }
             list.add(new Patient(firstName, lastName, birthday, id, provider, acuity, problems));
         }
+        if (!IDPresent) {
+            Patient.setIdCounter(list.get(list.toArray().length - 1).getIdNumber());
+        }
         System.out.println("LOADED SUCCESSFULLY");
     }
-    //helps with load()
-    private String removeComma(String str) {
-        return str.substring(0, str.length() - 1);
-    }
+
     private LinkedList<String> parseLinkedList(String str) {
         if (str.length() <= 5) {
             return new LinkedList<>();
