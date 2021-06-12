@@ -18,8 +18,8 @@ public class Main {
 
         boolean doLoop = true;
         while (doLoop) {
-            System.out.println("[0] View current patients");
-            System.out.println("[1] Search and view current patients");
+            System.out.println("[0] View patients");
+            System.out.println("[1] Search patients");
             System.out.println("[2] Edit patient info");
             System.out.println("[3] Add patient");
             System.out.println("[4] Remove patient");
@@ -44,7 +44,7 @@ public class Main {
     }
 
     public static void viewPatients(Scanner scnr, Storage patients){
-        Patient[] patients1 = patients.getList().toArray(Patient[]::new);
+        ArrayList<Patient> patients1 = patients.getList();
         System.out.println("Sort patients by: ");
         System.out.println("[0] Last Name");
         System.out.println("[1] First Name");
@@ -54,18 +54,20 @@ public class Main {
         int i = scnr.nextInt();
         scnr.nextLine();
         switch (i) {
-            case 0 -> Arrays.sort(patients1, new PatientSortByLastName());
-            case 1 -> Arrays.sort(patients1, new PatientSortByFirstName());
-            case 2 -> Arrays.sort(patients1, new PatientSortByAcuity());
-            case 3 -> Arrays.sort(patients1, new PatientSortByProvider());
+            case 0 -> patients1.sort(new PatientSortByLastName());
+            case 1 -> patients1.sort(new PatientSortByFirstName());
+            case 2 -> patients1.sort(new PatientSortByAcuity());
+            case 3 -> patients1.sort(new PatientSortByProvider());
         }
-        for (Patient p :
-                patients1) {
-            System.out.println(p);
-        }
-        System.out.println("Press Enter to continue: ");
-        scnr.nextLine();
 
+        Patient target = listAndGet(scnr, patients1);
+        if (target != null) {
+            System.out.println(target);
+            target.printProblemList();
+            System.out.println();
+        }
+        System.out.println("Press enter to continue");
+        scnr.nextLine();
     }
 
     public static void searchAndView(Scanner scnr, Storage patients){
