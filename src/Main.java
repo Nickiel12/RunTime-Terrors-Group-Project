@@ -222,9 +222,9 @@ public class Main {
         LocalDate birthday = getBirthdayFromScanner(scnr);
         System.out.print("Enter the Patient's acuity score: ");
         int acuity = getInputNumber(scnr);
-        scnr.nextLine();
         System.out.print("Patient Provider: ");
         String provider = scnr.nextLine();
+        provider = (provider.equals("")) ? null : provider;
 
         Patient p = new Patient(firstName, lastName, birthday, provider, acuity);
         patientList.add(p);
@@ -235,6 +235,7 @@ public class Main {
             String next = getProblemListNewProblem(scnr);
             if (next != null) p.getProblemList().add(next);
         }
+        System.out.println("\n" + p);
     }
 
     public static ArrayList<Patient> searchPatients(Scanner scnr, Storage patients){
@@ -289,6 +290,10 @@ public class Main {
                 }
             }
         }
+        if (found.size() == 0) {
+            System.out.println("No Patients were found! would you like to try again? (y/n)");
+            if (scnr.nextLine().toLowerCase().startsWith("y")) return searchPatients(scnr, patients);
+        }
         return found;
     }
 
@@ -310,10 +315,10 @@ public class Main {
     }
 
     public static Patient listAndGetPatient(Scanner scnr, ArrayList<Patient> patients){
-        System.out.println("[-1] Return to main menu");
         for (int i = 0; i < patients.size(); i++) {
             System.out.printf("[%d] %s\n", i, patients.get(i));
         }
+        System.out.println("[-1] Return to main menu\n");
         System.out.println("Which Patient did you mean?");
         int patNum = getInputNumber(scnr);
         if (patNum == -1) return null;
