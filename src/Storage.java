@@ -14,11 +14,9 @@ public class Storage {
     }
     //Saves patient info from ArrayList to csv file
     public void save() throws IOException {
-        FileWriter clean = new FileWriter(CSV_DIRECTORY);
-        FileWriter file = new FileWriter(CSV_DIRECTORY, true);
+        FileWriter file = new FileWriter(CSV_DIRECTORY);
 
-        clean.append("{firstName, lastName, birthday, ID, provider, Acuity, [problems list]}");
-        clean.close();
+        file.write("{firstName, lastName, birthday, ID, provider, Acuity, [problems list]}");
 
         file.write("\n{ " + Patient.getIdCounter() +"\n");
 
@@ -151,3 +149,4 @@ public class Storage {
         return list;
     }
 }
+
