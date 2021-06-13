@@ -40,7 +40,8 @@ public class Main {
             System.out.println("[5] View working employees");
 
 
-            System.out.println("[9] Quit");
+            System.out.println("[-1] Quit");
+
             int commandNum = getInputNumber(scnr);
             switch (commandNum) {
                 case 0 -> viewPatients(scnr, patients);
@@ -50,7 +51,7 @@ public class Main {
                 case 4 -> removePatient(scnr, patients);
                 case 5 -> viewEmployees(scnr, employees);
 
-                case 9 -> doLoop = false;
+                case -1 -> doLoop = false;
                 default -> System.out.println("Whoops! I didn't recognize that command! Please try again.");
             }
             System.out.println();
@@ -101,7 +102,7 @@ public class Main {
             case 1 -> patients1.sort(new PatientSortByFirstName());
             case 2 -> patients1.sort(new PatientSortByAcuity());
             case 3 -> patients1.sort(new PatientSortByProvider());
-            default -> System.out.println("I didn't recognize that command. Returning to main menu");
+            default -> {System.out.println("I didn't recognize that command. Returning to main menu"); return;}
         }
         for (Patient p: patients1) {
             System.out.println(p);
@@ -152,19 +153,21 @@ public class Main {
         if (i == -1) {System.out.println("Returning to main menu"); return;}
         if (i == 2) { editPatientProblems(scnr, target); return; }
 
-        System.out.print("Enter the new value: ");
         switch(i){
             case 0 -> {
+                System.out.println("Enter the new value: ");
                 int newAcuity = getInputNumber(scnr);
                 scnr.nextLine();
                 target.setAcuity(newAcuity);
             }
             case 1 -> {
+                System.out.println("Select a new provider");
                 Employee newProvider = listAndGetEmployee(scnr, employees);
                 if (newProvider != null)
                 target.setProvider(newProvider.getFirstName() + " " + newProvider.getLastName());
             }
             case 3 -> {
+                System.out.println("Which name would you like to change?");
                 System.out.println("[0] First Name");
                 System.out.println("[1] Last Name");
                 System.out.println("[-1] Cancel");
@@ -185,6 +188,9 @@ public class Main {
         }
         System.out.println("Would like to make another change? (y/n)");
         if (scnr.nextLine().toLowerCase().startsWith("y")) editPatientProblems(scnr, target);
+        System.out.println("Updated patient information");
+        System.out.println(target);
+        target.printProblemList();
     }
 
     public static void editPatientProblems(Scanner scnr, Patient target){
@@ -301,7 +307,7 @@ public class Main {
         ArrayList<Patient> found = searchPatients(scnr, patients);
 
         if (found == null) return null;
-
+        System.out.println();
         System.out.printf("%d Patient(s) found\n", found.size());
         Patient target;
         if (found.size() > 1){
@@ -311,6 +317,7 @@ public class Main {
             System.out.println("No Patients were found");
             return null;
         }
+        System.out.println();
         return target;
     }
 
@@ -319,17 +326,17 @@ public class Main {
             System.out.printf("[%d] %s\n", i, patients.get(i));
         }
         System.out.println("[-1] Return to main menu\n");
-        System.out.println("Which Patient did you mean?");
+        System.out.print("Which Patient did you mean? ");
         int patNum = getInputNumber(scnr);
         if (patNum == -1) return null;
         return patients.get(patNum);
     }
 
     public static Employee listAndGetEmployee(Scanner scnr, ArrayList<Employee> employees){
-        System.out.println("[-1] Null");
         for (int i = 0; i < employees.size(); i++) {
             System.out.printf("[%d] %s\n", i, employees.get(i));
         }
+        System.out.println("[-1] Null");
         System.out.println("Which employee did you mean?");
         int patNum = getInputNumber(scnr);
         if (patNum == -1) return null;
