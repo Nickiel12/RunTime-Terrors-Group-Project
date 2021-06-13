@@ -82,7 +82,7 @@ public class Patient {
         this.provider = provider;
     }
     public String getProvider(){
-        return provider;
+        return (provider == null) ? "None" : provider;
     }
 
     // Birthday
