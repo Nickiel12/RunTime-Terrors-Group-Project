@@ -93,6 +93,8 @@ public class Main {
         System.out.println("[1] First Name");
         System.out.println("[2] By Acuity");
         System.out.println("[3] By provider");
+        System.out.println("[4] By DOB");
+        System.out.println("[5] By ID number");
         System.out.println("[-1] Return to main menu");
 
         int i = getInputNumber(scnr);
@@ -102,6 +104,8 @@ public class Main {
             case 1 -> patients1.sort(new PatientSortByFirstName());
             case 2 -> patients1.sort(new PatientSortByAcuity());
             case 3 -> patients1.sort(new PatientSortByProvider());
+            case 4 -> patients1.sort(new PatientSortByDOB());
+            case 5 -> patients1.sort(new PatientSortByID());
             default -> {System.out.println("I didn't recognize that command. Returning to main menu"); return;}
         }
         for (Patient p: patients1) {
