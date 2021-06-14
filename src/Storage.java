@@ -124,14 +124,15 @@ public class Storage {
     }
 
     private LinkedList<String> parseLinkedList(String str) {
-        if (str.length() <= 5) {
+        if (str.length() <= 3) {
             return new LinkedList<>();
         }
 
-        str = str.substring(2, str.length() - 3);
+        str = str.substring(2, str.length() - 2);
         String[] strA = str.split(",");
-        strA[0] = strA[0].substring(1);
-
+        for (int i = 0; i < strA.length; i++) {
+            strA[i] = strA[i].substring(1);
+        }
         return new LinkedList<>(Arrays.asList(strA));
     }
     public void add(Patient patient) {
