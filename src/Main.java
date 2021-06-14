@@ -130,7 +130,7 @@ public class Main {
     public static void removePatient(Scanner scnr, Storage patients) {
         Patient target = findPatient(scnr, patients);
         if (target != null) {
-            System.out.println("Are you sure you would like to remove " + target + "? (y/n)");
+            System.out.println("Are you sure you would like to this patient? (y/n)" + "\n\t" + target);
             String answer = scnr.nextLine();
             if (answer.toLowerCase().startsWith("y")) {
                 patients.getList().remove(target);
