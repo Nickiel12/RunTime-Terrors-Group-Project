@@ -6,7 +6,7 @@ import java.util.*;
 public class Storage {
     private final String CSV_DIRECTORY = "Assets/Storage.csv";  //file path of csv storage
 
-    private final ArrayList<Patient> list = new ArrayList(); //ArrayList of type patient
+    private final ArrayList<Patient> list = new ArrayList<>(); //ArrayList of type patient
 
     //Starts storage and loads
     public Storage() throws IOException {

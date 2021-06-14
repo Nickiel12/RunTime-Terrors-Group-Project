@@ -1,10 +1,7 @@
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -14,7 +11,7 @@ public class Main {
         ArrayList<Employee> employees = new ArrayList<>();
         employees.add(new Employee("Kathrine", "Watkins",
                 LocalDate.of(1950, 6, 5), "Head Doctor"));
-        employees.add(new Employee("Colin", "Wilkins",
+        employees.add(new Employee("Collin", "Wilkins",
                 LocalDate.of(2055, 5, 24), "Lead Tech"));
         employees.add(new Employee("Nicholas", "Young",
                 LocalDate.of(2000, 5, 23), "Psychoanologist"));
@@ -130,7 +127,7 @@ public class Main {
     public static void removePatient(Scanner scnr, Storage patients) {
         Patient target = findPatient(scnr, patients);
         if (target != null) {
-            System.out.println("Are you sure you would like to this patient? (y/n)" + "\n\t" + target);
+            System.out.println("`Are you sure you would like to this patient? (y/n)" + "\n\t" + target);
             String answer = scnr.nextLine();
             if (answer.toLowerCase().startsWith("y")) {
                 patients.getList().remove(target);
@@ -270,10 +267,11 @@ public class Main {
             case -1 -> {System.out.println("Returning to main menu"); return null;}
             case 0 -> {
                 System.out.print("Enter the Name you would like to search: ");
-                String name = scnr.nextLine();
+                String name = scnr.nextLine().toLowerCase();
                 for (Patient p : patients1) {
-                    if (p.getName().contains(name) || (p.getFirstName() + " " + p.getLastName()).contains(name)
-                            || (p.getFirstName() + ", " + p.getLastName()).contains(name)){
+                    if (p.getName().toLowerCase().contains(name)
+                            || (p.getFirstName().toLowerCase() + " " + p.getLastName().toLowerCase()).contains(name)
+                            || (p.getFirstName().toLowerCase() + ", " + p.getLastName().toLowerCase()).contains(name)){
                         found.add(p);
                     }
                 }
