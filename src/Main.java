@@ -27,7 +27,7 @@ public class Main {
 
         Storage patients = new Storage();
 
-        System.out.println("Welcome to the RunTime Terrors Patient Tracking Software");
+        System.out.println("Welcome to the RunTime Terrors Patient Tracking Software (GPS tracking pending)");
         System.out.println("Follow the prompts to navigate\n");
 
         boolean doLoop = true;
@@ -46,8 +46,8 @@ public class Main {
             switch (commandNum) {
                 case 0 -> viewPatients(scnr, patients);
                 case 1 -> searchAndView(scnr, patients);
-                case 2 -> editPatientInfo(scnr, patients, employees);
-                case 3 -> createNewPatient(scnr, patients);
+                case 2 -> editPatientInfo(scnr, patients, employees, null);
+                case 3 -> createNewPatient(scnr, patients, employees);
                 case 4 -> removePatient(scnr, patients);
                 case 5 -> viewEmployees(scnr, employees);
 
@@ -142,8 +142,8 @@ public class Main {
         }
     }
 
-    public static void editPatientInfo(Scanner scnr, Storage patients, ArrayList<Employee> employees){
-        Patient target = findPatient(scnr, patients);
+    public static void editPatientInfo(Scanner scnr, Storage patients, ArrayList<Employee> employees, Patient target){
+        if (target == null) target = findPatient(scnr, patients);
         if (target == null) return;
         System.out.println(target);
         System.out.println("What would you like to change?");
@@ -155,7 +155,7 @@ public class Main {
 
         int i = getInputNumber(scnr);
         if (i == -1) {System.out.println("Returning to main menu"); return;}
-        if (i == 2) { editPatientProblems(scnr, target); return; }
+        if (i == 2) { editPatientProblems(scnr, target);}
 
         switch(i){
             case 0 -> {
@@ -191,7 +191,7 @@ public class Main {
             }
         }
         System.out.println("Would like to make another change? (y/n)");
-        if (scnr.nextLine().toLowerCase().startsWith("y")) editPatientProblems(scnr, target);
+        if (scnr.nextLine().toLowerCase().startsWith("y")) editPatientInfo(scnr, patients, employees, target);
         System.out.println("Updated patient information");
         System.out.println(target);
         target.printProblemList();
@@ -212,7 +212,9 @@ public class Main {
             for (String s : currentProblems) {
                 System.out.printf("[%d] %s", j++, s);
             }
+            System.out.println("[-1] Cancel");
             i = getInputNumber(scnr);
+            if (i == -1) return;
             try{
                 currentProblems.remove(i);
             } catch (IndexOutOfBoundsException e){
@@ -224,19 +226,22 @@ public class Main {
         }
     }
 
-    public static void createNewPatient(Scanner scnr, Storage patientList){
+    public static void createNewPatient(Scanner scnr, Storage patientList, ArrayList<Employee> employees){
+        System.out.println("Enter [Quit] to cancel");
         System.out.print("Patient First Name: ");
         String firstName = scnr.nextLine();
+        if (firstName.equalsIgnoreCase("quit")) return;
         System.out.print("Patient Last Name: ");
         String lastName = scnr.nextLine();
+        if (lastName.equalsIgnoreCase("quit")) return;
         LocalDate birthday = getBirthdayFromScanner(scnr);
         System.out.print("Enter the Patient's acuity score: ");
         int acuity = getInputNumber(scnr);
-        System.out.print("Patient Provider: ");
-        String provider = scnr.nextLine();
-        provider = (provider.equals("")) ? null : provider;
+        System.out.println("Select a Provider: ");
+        Employee provider = listAndGetEmployee(scnr, employees);
+        String providerString = (provider != null) ? provider.getFirstName() + " " + provider.getLastName() : "None";
 
-        Patient p = new Patient(firstName, lastName, birthday, provider, acuity);
+        Patient p = new Patient(firstName, lastName, birthday, providerString, acuity);
         patientList.add(p);
 
         System.out.println("Anything to add to the Problems Chart? (y/n)");
@@ -246,6 +251,7 @@ public class Main {
             if (next != null) p.getProblemList().add(next);
         }
         System.out.println("\n" + p);
+        p.printProblemList();
     }
 
     public static ArrayList<Patient> searchPatients(Scanner scnr, Storage patients){
